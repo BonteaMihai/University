@@ -1,0 +1,2 @@
+Write a C program which receives arguments from the command line and creates a thread for each of them, which will print them on a line each.
+Remember the extra arg: gcc -Wall -pthread -g -o <exe_name> <Cfile_name>
