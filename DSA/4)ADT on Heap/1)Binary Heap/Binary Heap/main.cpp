@@ -15,7 +15,7 @@ bool Min_heap(TPriority p1, TPriority p2)
 
 void test_max_heap()
 {
-	TripleHeap heap = TripleHeap(Max_heap);
+	Heap heap = Heap(Max_heap);
 	assert(heap.isEmpty() == true);
 	assert(heap.size() == 0);
 
@@ -36,7 +36,7 @@ void test_max_heap()
 
 void test_min_heap()
 {
-	TripleHeap heap = TripleHeap(Min_heap);
+	Heap heap = Heap(Min_heap);
 	assert(heap.isEmpty() == true);
 	assert(heap.size() == 0);
 
