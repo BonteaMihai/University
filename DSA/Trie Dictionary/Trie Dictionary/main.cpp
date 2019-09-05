@@ -121,10 +121,39 @@ void test_remove()
 	assert(trie.size() == 0);
 }
 
+void test_common_prefix()
+{
+	Trie trie;
+	char s1[25], s2[25], s3[25], s4[25], s5[25], s6[25];
+
+	strcpy(s1, "ante");
+
+	strcpy(s2, "antebellum");
+	strcpy(s3, "antediluvian");
+	strcpy(s4, "anterior");
+	strcpy(s5, "antelucan");
+	strcpy(s6, "antechamber");
+
+	trie.add_wrapper(s2);
+	trie.add_wrapper(s3);
+	trie.add_wrapper(s4);
+	trie.add_wrapper(s5);
+	trie.add_wrapper(s6);
+
+	assert(trie.common_prefix_wrapper(s1) == 4);
+
+	strcpy(s1, "postfix");
+	assert(trie.common_prefix_wrapper(s1) == 0);
+
+	strcpy(s1, "antic");
+	assert(trie.common_prefix_wrapper(s1) == 3);
+}
+
 int main()
 {
 	test_add_search();
 	test_remove();
+	test_common_prefix();
 	std::cout << "All tests passed!\n";
 	system("pause");
 	return 0;

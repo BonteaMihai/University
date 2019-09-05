@@ -106,6 +106,24 @@ bool Trie::remove(NODE *node, char *s)
 	return false;
 }
 
+int Trie::common_prefix_wrapper(char *word) const
+{
+	for (unsigned index = 0; index < strlen(word); ++index)
+		if (!isalpha(word[index]))
+			throw std::exception();
+	
+	return common_prefix(root, word, 0);
+}
+
+int Trie::common_prefix(NODE *node, char *s, int k) const
+{
+	if (*s == 0 || node->children[CH] == 0)
+	{
+		return k;
+	}
+	return common_prefix(node->children[CH], s + 1, k + 1);
+}
+
 int Trie::size() const
 {
 	return nr_words;

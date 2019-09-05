@@ -63,6 +63,18 @@ private:
 		where n is the length of the word
 	*/
 
+	int common_prefix(NODE *node, char *s, int k) const;
+	/*
+		Description: recursive function responsible for returning
+					 the longest common prefix of the word given and the longest
+					 word from the list
+
+		Best Case = O(1)
+		Worst Case = O(n)
+		Average Case = O(n)
+		where n is the length of the word
+	*/
+
 public:
 
 	Trie();
@@ -105,6 +117,17 @@ public:
 		throws: exception if the word contains illegal characters
 				legal characters are the letters from a to z, lowercased
 
+
+		Best Case = Worst Case = Average Case = O(n) where n is the
+		length of the word
+	*/
+
+	int common_prefix_wrapper(char *word) const;
+	/*
+		Description: returns the length of the longest common prefix of the word
+					 given and any word from the list
+		throws: exception if the word contains illegal characters
+				legal characters are the letters from a to z, lowercased
 
 		Best Case = Worst Case = Average Case = O(n) where n is the
 		length of the word
