@@ -1,4 +1,4 @@
-# Data Structures and Algorithms
+# Data Structures and Algorithms :octocat:
 
 Since "Algorithms + Data Structures = Programs", the importance of choosing the right data structure for the program is obvious. 
 This project is about various ADTs and studying their complexities based on their representation/implementation. 
