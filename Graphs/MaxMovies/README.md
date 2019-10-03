@@ -13,9 +13,9 @@ Having the topological sort list, the maximum number of movies one could watch c
 
 dp[i] =
 
-*dp[j] + 1, where j is from {0, ... i - 1} and there exists an edge between j and i and dp[j] + 1 > dp[i]
+* dp[j] + 1, where j is from {0, ... i - 1} and there exists an edge between j and i and dp[j] + 1 > dp[i]
 
-*dp[i] otherwise
+* dp[i] otherwise
 
 Or in other words, **dp[i] = max(dp[i], dp[j + 1])**, which gets executed for every j from {0, ..., i - 1} if (j, i) is an edge.
 
