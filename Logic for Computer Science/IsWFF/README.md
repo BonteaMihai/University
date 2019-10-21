@@ -22,7 +22,7 @@ defined recursively as follows:
 
 4. All formulae are generated following the above rules.
 
-**All of the above taken from DR. Adrian Craciun's course slides.**
+**All of the above taken from DR. Adrian Craciun's lecture notes.**
 
 http://staff.fmi.uvt.ro/~adrian.craciun/lectures/logic/pdf/logicNotes.pdf
 
