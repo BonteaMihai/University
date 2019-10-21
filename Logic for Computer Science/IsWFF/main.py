@@ -100,11 +100,9 @@ class WFPropositionalFormula:
 """
 form1 = WFPropositionalFormula("(A ∨ B)")
 form1.is_valid()
-"""
-"""
+
 form2 = WFPropositionalFormula("((A ∨ B)↔(A ∨ B))")
 form2.is_valid()
-"""
 
 
 form3 = WFPropositionalFormula("(A ∨ B)↔(A ∨ B)")
@@ -118,3 +116,4 @@ form5.is_valid()
 
 form6 = WFPropositionalFormula("(((↔ Q) ∨ S) ↔ T)")
 form6.is_valid()
+"""

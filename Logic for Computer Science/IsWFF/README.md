@@ -42,3 +42,8 @@ capable of also stating what the problem is(see the picture below).
 
 ![Logica1](https://user-images.githubusercontent.com/51800513/67225175-69653900-f43b-11e9-937f-04f351204405.png)
 
+## Update
+
+-added User Interface
+
+![Logica2](https://user-images.githubusercontent.com/51800513/67230702-6c195b80-f446-11e9-865c-e38cd066ade5.png)
