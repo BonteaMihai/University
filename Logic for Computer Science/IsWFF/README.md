@@ -47,3 +47,8 @@ capable of also stating what the problem is(see the picture below).
 -added User Interface
 
 ![Logica2](https://user-images.githubusercontent.com/51800513/67230702-6c195b80-f446-11e9-865c-e38cd066ade5.png)
+
+-fixed error where ( opened but not closed lead to index out of range error
+
+![12](https://user-images.githubusercontent.com/51800513/67276929-5cddf080-f4ce-11e9-9ac2-8171ceef5b7f.png)
+

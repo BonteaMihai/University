@@ -68,7 +68,7 @@ class WFPropositionalFormula:
                     if operand1 == False:
                         return False
                 else:
-                    print("Expected operand at index " + str(self.__index) + " but string ended")
+                    print("Expression is invalid: expected operand at index " + str(self.__index) + " but string ended")
                     return False
 
                 if (self.__index < len(self.__expression)):
@@ -85,7 +85,7 @@ class WFPropositionalFormula:
                     if operand2 == False:
                         return False
                 else:
-                    print("Expected operand at index " + str(self.__index) + " but string ended")
+                    print("Expression is invalid: expected operand at index " + str(self.__index) + " but string ended")
                     return False
 
             
@@ -109,7 +109,7 @@ class WFPropositionalFormula:
                 self.__index += 1
                 return True
             else:
-                print("Expression is invalid: expected uppercase letter at index" + str(self.__index) + " not " + self.__expression[self.__index])
+                print("Expression is invalid: expected uppercase letter at index " + str(self.__index) + " not " + self.__expression[self.__index])
                 return False
 
 
