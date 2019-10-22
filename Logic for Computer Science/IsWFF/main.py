@@ -63,22 +63,38 @@ class WFPropositionalFormula:
 
             # We should have 2 operands with a connective between them
             else:
-                operand1 = self.__validate_expression()
-                if operand1 == False:
+                if (self.__index < len(self.__expression)):
+                    operand1 = self.__validate_expression()
+                    if operand1 == False:
+                        return False
+                else:
+                    print("Expected operand at index " + str(self.__index) + " but string ended")
                     return False
 
-                if (self.__expression[self.__index] not in self.__connectives):
-                    print("Expression is invalid: expected connective at index " + str(self.__index))
-                    return False
+                if (self.__index < len(self.__expression)):
+                    if (self.__expression[self.__index] not in self.__connectives):
+                        print("Expression is invalid: expected connective at index " + str(self.__index))
+                        return False
+                    else:
+                        self.__index += 1
                 else:
-                    self.__index += 1
+                    print("Expected connective at index " + str(self.__index) + " but string ended")
                 
-                operand2 = self.__validate_expression()
-                if operand2 == False:
+                if (self.__index < len(self.__expression)):
+                    operand2 = self.__validate_expression()
+                    if operand2 == False:
+                        return False
+                else:
+                    print("Expected operand at index " + str(self.__index) + " but string ended")
                     return False
+
             
             # Either way, if the expression started with ')', it should end with ')'
-            if self.__expression[self.__index] != ')':
+            if self.__index >= len(self.__expression):
+                print("Expression is invalid: expected ) at index " + str(self.__index) + " but string ended.")
+                return False
+
+            elif self.__expression[self.__index] != ')':
                 print("Expression is invalid: expected ) at index " + str(self.__index))
                 return False
             else:
