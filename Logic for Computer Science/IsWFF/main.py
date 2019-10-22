@@ -29,17 +29,17 @@ class WFPropositionalFormula:
             return False
 
         if self.__open_parentheses < 0:
-            print("Expression invalid: more closed parentheses than open parentheses!")
+            print("String is not a formula : more closed parentheses than open parentheses!")
             return False
         elif self.__open_parentheses > 0:
-            print("Expression invalid: there exist parentheses opened but not closed!")
+            print("String is not a formula: there exist parentheses opened but not closed!")
             return False
 
         if self.__index < len(self.__expression):
-            print("Expression is invalid: expression not fully enclosed in parentheses!")
+            print("String is not a formula: expression not fully enclosed in parentheses!")
             return False
         else:
-            print("Expression is valid!")
+            print("String is a well formed propositional formula!")
             return True
 
     def __validate_expression(self):
@@ -68,34 +68,34 @@ class WFPropositionalFormula:
                     if operand1 == False:
                         return False
                 else:
-                    print("Expression is invalid: expected operand at index " + str(self.__index) + " but string ended")
+                    print("String is not a formula: expected operand at index " + str(self.__index) + " but string ended")
                     return False
 
                 if (self.__index < len(self.__expression)):
                     if (self.__expression[self.__index] not in self.__connectives):
-                        print("Expression is invalid: expected connective at index " + str(self.__index))
+                        print("String is not a formula: expected connective at index " + str(self.__index))
                         return False
                     else:
                         self.__index += 1
                 else:
-                    print("Expected connective at index " + str(self.__index) + " but string ended")
+                    print("String is not a formula: expected connective at index " + str(self.__index) + " but string ended")
                 
                 if (self.__index < len(self.__expression)):
                     operand2 = self.__validate_expression()
                     if operand2 == False:
                         return False
                 else:
-                    print("Expression is invalid: expected operand at index " + str(self.__index) + " but string ended")
+                    print("String is not a formula: expected operand at index " + str(self.__index) + " but string ended")
                     return False
 
             
             # Either way, if the expression started with ')', it should end with ')'
             if self.__index >= len(self.__expression):
-                print("Expression is invalid: expected ) at index " + str(self.__index) + " but string ended.")
+                print("String is not a formula: expected ) at index " + str(self.__index) + " but string ended.")
                 return False
 
             elif self.__expression[self.__index] != ')':
-                print("Expression is invalid: expected ) at index " + str(self.__index))
+                print("String is not a formula: expected ) at index " + str(self.__index))
                 return False
             else:
                 self.__index += 1
@@ -109,7 +109,7 @@ class WFPropositionalFormula:
                 self.__index += 1
                 return True
             else:
-                print("Expression is invalid: expected uppercase letter at index " + str(self.__index) + " not " + self.__expression[self.__index])
+                print("String is not a formula: expected uppercase letter at index " + str(self.__index) + " not " + self.__expression[self.__index])
                 return False
 
 

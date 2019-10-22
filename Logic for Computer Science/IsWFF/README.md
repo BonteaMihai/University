@@ -32,8 +32,8 @@ The program can be solved in **O(n)**, and more specifically, in just one traver
 From the recursive nature of the definition we can observe that a WFF is either two other WFFs with a propositional connective inbetween,
 or the negation of another WFF. The most basic example of a WFF is an atom.
 
-Thus, for simplicity(without sacrificing efficiency) the program will be built around a recursive function which decides the validity of
-an expression by checking the validity of the expressions which comprise it. This stops when we reach the base case of atom, or when we
+Thus, for simplicity(without sacrificing efficiency) the program will be built around a recursive function which decides if a string is a WFF
+by checking whether the expressions which comprise it are WFFs. This stops when we reach the base case of atom, or when we
 spot violations of the syntax, such as parentheses opened but not closed, formulas with no connective between them, or two connectives one
 after the other.
 

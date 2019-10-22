@@ -24,7 +24,7 @@ class UserInterface():
                     line = line.replace('3', '∧')
                     line = line.replace('4', '→')
                     line = line.replace('5', '↔')
-                    print("For line " + str(i))
+                    print(style.GREEN("For line " + str(i + 1)) + style.RESET(""))
                     print(line)
                     form = WFPropositionalFormula(line)
                     form.is_valid()
