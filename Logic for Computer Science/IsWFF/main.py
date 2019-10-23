@@ -1,14 +1,16 @@
-
+from InfixToPostfix import Conversion
+from ExpressionTree import *
 
 class WFPropositionalFormula:
 
     def __init__(self, from_str):
         
-        self.__connectives = ['↔', '→', '∨', '∧',]
+        self.__connectives = ['↔', '→', '∨', '∧']
         self.__negation = '¬'
         # This class variable will store the string of the expression
         # Removing all empty spaces from the string then storing it
         self.__expression = from_str.replace(' ', '')    
+        self.__expression_tree = None
     
     def is_valid(self):
         """
@@ -39,7 +41,15 @@ class WFPropositionalFormula:
             print("String is not a formula: expression not fully enclosed in parentheses!")
             return False
         else:
+            # If it is a well formed propositional formula, convert it to postfix and 
+            # Store it a an expression tree, before returning True
             print("String is a well formed propositional formula!")
+
+            obj = Conversion()
+            postfix = obj.infix_to_postfix(self.__expression)
+
+            self.__expression_tree = ExpressionTree(postfix)
+            #self.__expression_tree.inorder_traversal()
             return True
 
     def __validate_expression(self):
