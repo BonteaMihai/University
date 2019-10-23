@@ -52,3 +52,4 @@ capable of also stating what the problem is(see the picture below).
 
 ![12](https://user-images.githubusercontent.com/51800513/67276929-5cddf080-f4ce-11e9-9ac2-8171ceef5b7f.png)
 
+-added extra functionality: converting infix formula to postfix formula

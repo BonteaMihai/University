@@ -1,5 +1,6 @@
 from COLORS import style
 from main import WFPropositionalFormula
+from InfixToPostfix import Conversion
 import os, sys
 
 if sys.platform.lower() == "win32":
@@ -9,7 +10,7 @@ class UserInterface():
 
     def __init__(self):
         self.__filename = "example.txt"
-        self.__options = {"1":self.__load_file, "2": self.__test_string}
+        self.__options = {"1":self.__load_file, "2": self.__test_string, "3": self.__convert_to_infix}
 
     def __load_file(self):
         try:
@@ -43,12 +44,31 @@ class UserInterface():
         print(expr)
         form = WFPropositionalFormula(expr)
         form.is_valid()
+    
+    def __convert_to_infix(self):
+        print(style.YELLOW("[ ¬ : 1 ][ ∨ : 2 ][ ∧ : 3 ][ → : 4 ][ ↔ : 5 ]") + style.RESET(""))
+        expr = input(style.BLUE("Insert your expression(with the help of the table above: ") + style.RESET(""))
+        expr = expr.replace('1', '¬')
+        expr = expr.replace('2', '∨')
+        expr = expr.replace('3', '∧')
+        expr = expr.replace('4', '→')
+        expr = expr.replace('5', '↔')
+        expr = expr.replace(' ', '')
+        print(expr)
+
+        print(style.GREEN("Postfix form is: ") + style.RESET(""), end = "")
+        
+        # Converting
+        obj = Conversion()
+        print(obj.infix_to_postfix(expr))
+
 
 
     def __print_menu(self):
         print(style.BLUE("\n\nChoose one of the following options: ") + style.RESET(""))
         print(style.BLUE("1) Test for the strings in file.") + style.RESET(""))
         print(style.BLUE("2) Insert a string from keyboard and test whether it is a WFF.") + style.RESET(""))
+        print(style.BLUE("3) Convert infix formula to postfix(Has to be WFF!)") + style.RESET(""))
         print(style.RED("Or insert 'exit' to quit") + style.RESET(""))
 
     def start(self):
