@@ -41,16 +41,20 @@ class WFPropositionalFormula:
             print("String is not a formula: expression not fully enclosed in parentheses!")
             return False
         else:
-            # If it is a well formed propositional formula, convert it to postfix and 
-            # Store it a an expression tree, before returning True
             print("String is a well formed propositional formula!")
-
-            obj = Conversion()
-            postfix = obj.infix_to_postfix(self.__expression)
-
-            self.__expression_tree = ExpressionTree(postfix)
-            #self.__expression_tree.inorder_traversal()
             return True
+    def store_as_exp_tree(self):
+        # If it is a well formed propositional formula, convert it to postfix and 
+        # Store it a an expression tree, before returning True
+        obj = Conversion()
+        postfix = obj.infix_to_postfix(self.__expression)
+        self.__expression_tree = ExpressionTree(postfix)
+        #self.__expression_tree.inorder_traversal()
+        return True
+    
+    def print_exp_tree(self):
+        if self.__expression_tree != None:
+            self.__expression_tree.inorder_traversal()
 
     def __validate_expression(self):
         """

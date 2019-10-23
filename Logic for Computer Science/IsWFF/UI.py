@@ -10,7 +10,7 @@ class UserInterface():
 
     def __init__(self):
         self.__filename = "example.txt"
-        self.__options = {"1":self.__load_file, "2": self.__test_string, "3": self.__convert_to_infix}
+        self.__options = {"1":self.__load_file, "2": self.__test_string, "3": self.__convert_to_infix, "4": self.__exp_tree}
 
     def __load_file(self):
         try:
@@ -62,13 +62,25 @@ class UserInterface():
         obj = Conversion()
         print(obj.infix_to_postfix(expr))
 
-
+    def __exp_tree(self):
+        print(style.YELLOW("[ ¬ : 1 ][ ∨ : 2 ][ ∧ : 3 ][ → : 4 ][ ↔ : 5 ]") + style.RESET(""))
+        expr = input(style.BLUE("Insert your expression(with the help of the table above: ") + style.RESET(""))
+        expr = expr.replace('1', '¬')
+        expr = expr.replace('2', '∨')
+        expr = expr.replace('3', '∧')
+        expr = expr.replace('4', '→')
+        expr = expr.replace('5', '↔')
+        print(expr)
+        form = WFPropositionalFormula(expr)
+        form.store_as_exp_tree()
+        form.print_exp_tree()
 
     def __print_menu(self):
         print(style.BLUE("\n\nChoose one of the following options: ") + style.RESET(""))
         print(style.BLUE("1) Test for the strings in file.") + style.RESET(""))
         print(style.BLUE("2) Insert a string from keyboard and test whether it is a WFF.") + style.RESET(""))
         print(style.BLUE("3) Convert infix formula to postfix(Has to be WFF!)") + style.RESET(""))
+        print(style.MAGENTA("4) Store a formula as an expression tree, prints inorder traversal (Has to be WFF!)") + style.RESET(""))
         print(style.RED("Or insert 'exit' to quit") + style.RESET(""))
 
     def start(self):

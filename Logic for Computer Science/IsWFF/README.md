@@ -46,7 +46,9 @@ capable of also stating what the problem is(see the picture below).
 
 -added User Interface
 
-![Logica2](https://user-images.githubusercontent.com/51800513/67230702-6c195b80-f446-11e9-865c-e38cd066ade5.png)
+-updated User Interface
+
+![NEWUI](https://user-images.githubusercontent.com/51800513/67378955-c0305700-f590-11e9-961d-cb9a9be590e2.png)
 
 -fixed error where ( opened but not closed lead to index out of range error
 
