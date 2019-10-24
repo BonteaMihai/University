@@ -123,7 +123,7 @@ class WFPropositionalFormula:
                 self.__index += 1
                 return True
             else:
-                print("String is not a formula: expected uppercase letter at index " + str(self.__index) + " not " + self.__expression[self.__index])
+                print("String is not a formula: expected uppercase letter/WFF at index " + str(self.__index) + " not " + self.__expression[self.__index])
                 return False
 
 

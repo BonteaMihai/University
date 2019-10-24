@@ -12,6 +12,19 @@ class UserInterface():
         self.__filename = "example.txt"
         self.__options = {"1":self.__load_file, "2": self.__test_string, "3": self.__convert_to_infix, "4": self.__exp_tree}
 
+    def __convert_str(self, user_input):
+        """
+        Replaces [1, 2, 3, 4, 5] with the respective connectives for the given string
+        Returns the list with the modifications
+        """
+        user_input = user_input.replace('1', '¬')
+        user_input = user_input.replace('2', '∨')
+        user_input = user_input.replace('3', '∧')
+        user_input = user_input.replace('4', '→')
+        user_input = user_input.replace('5', '↔')
+
+        return user_input
+
     def __load_file(self):
         try:
             with open(self.__filename, "r") as file:
@@ -20,11 +33,7 @@ class UserInterface():
 
                 for i in range(nr_formulas):
                     line = file.readline()
-                    line = line.replace('1', '¬')
-                    line = line.replace('2', '∨')
-                    line = line.replace('3', '∧')
-                    line = line.replace('4', '→')
-                    line = line.replace('5', '↔')
+                    line = self.__convert_str(line)
                     print(style.GREEN("For line " + str(i + 1)) + style.RESET(""))
                     print(line)
                     form = WFPropositionalFormula(line)
@@ -36,11 +45,7 @@ class UserInterface():
     def __test_string(self):
         print(style.YELLOW("[ ¬ : 1 ][ ∨ : 2 ][ ∧ : 3 ][ → : 4 ][ ↔ : 5 ]") + style.RESET(""))
         expr = input(style.BLUE("Insert your expression(with the help of the table above: ") + style.RESET(""))
-        expr = expr.replace('1', '¬')
-        expr = expr.replace('2', '∨')
-        expr = expr.replace('3', '∧')
-        expr = expr.replace('4', '→')
-        expr = expr.replace('5', '↔')
+        expr = self.__convert_str(expr)
         print(expr)
         form = WFPropositionalFormula(expr)
         form.is_valid()
@@ -48,12 +53,7 @@ class UserInterface():
     def __convert_to_infix(self):
         print(style.YELLOW("[ ¬ : 1 ][ ∨ : 2 ][ ∧ : 3 ][ → : 4 ][ ↔ : 5 ]") + style.RESET(""))
         expr = input(style.BLUE("Insert your expression(with the help of the table above: ") + style.RESET(""))
-        expr = expr.replace('1', '¬')
-        expr = expr.replace('2', '∨')
-        expr = expr.replace('3', '∧')
-        expr = expr.replace('4', '→')
-        expr = expr.replace('5', '↔')
-        expr = expr.replace(' ', '')
+        expr = self.__convert_str(expr)
         print(expr)
 
         print(style.GREEN("Postfix form is: ") + style.RESET(""), end = "")
@@ -65,11 +65,7 @@ class UserInterface():
     def __exp_tree(self):
         print(style.YELLOW("[ ¬ : 1 ][ ∨ : 2 ][ ∧ : 3 ][ → : 4 ][ ↔ : 5 ]") + style.RESET(""))
         expr = input(style.BLUE("Insert your expression(with the help of the table above: ") + style.RESET(""))
-        expr = expr.replace('1', '¬')
-        expr = expr.replace('2', '∨')
-        expr = expr.replace('3', '∧')
-        expr = expr.replace('4', '→')
-        expr = expr.replace('5', '↔')
+        expr = self.__convert_str(expr)
         print(expr)
         form = WFPropositionalFormula(expr)
         form.store_as_exp_tree()
