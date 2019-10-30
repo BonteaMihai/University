@@ -22,6 +22,9 @@ class UserInterface():
         user_input = user_input.replace('3', '∧')
         user_input = user_input.replace('4', '→')
         user_input = user_input.replace('5', '↔')
+        user_input = user_input.replace(' ', '')
+        user_input = user_input.replace('\n', '')
+        user_input = user_input.strip()
 
         return user_input
 
