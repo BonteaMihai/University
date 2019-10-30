@@ -24,7 +24,7 @@ iff the proposition is true under all possible interpretations. The formula is *
 **Definition** (Satisfiability). A propositional formula B is said to be *satisfiable* in propositional logic iff there exists some
 interpretation for which the formula is evaluated to true.
 
-A propositional formula is said *unsatisfiable* (*inconsistent) iff it is false under all truth valuations(all interpretations).
+A propositional formula is said *unsatisfiable* (*inconsistent*) iff it is false under all truth valuations(all interpretations).
 
 **All of the above taken from DR. Adrian Craciun's lecture notes.**
 
@@ -40,3 +40,7 @@ negation, only one operator should be popped from the stack.
 **Evaluating the truth value** of a propositional formula is done in a (recursive) divide and conquer way, where the truth value of a WFF is decided by
 applying the function associated to the operator(connective) on the truth values of its children(or child in the case of negation). When the leaf nodes
 are reached, the value of the respective atoms are returned from a dictionary given by the user.
+
+- program shows all steps in the evaluating process:
+
+![Untitled](https://user-images.githubusercontent.com/51800513/67838186-646a4e80-faf9-11e9-9e55-06b3e3ee6ecb.png)
