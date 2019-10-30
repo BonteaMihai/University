@@ -10,7 +10,7 @@ class UserInterface():
 
     def __init__(self):
         self.__filename = "example.txt"
-        self.__options = {"1":self.__truth_value_ui}
+        self.__options = {"1" : self.__truth_value_ui, "2" : self.__exp_tree, "3" : self.__proposition_type}
 
     def __convert_str(self, user_input):
         """
@@ -62,6 +62,31 @@ class UserInterface():
 
         except IOError:
             pass
+    
+    def __proposition_type(self):
+        try:
+            with open(self.__filename, "r") as file:
+                expr = file.readline()
+        
+        except IOError:
+            pass
+        
+        expr = self.__convert_str(expr)
+        print(expr)
+
+        form = WFPropositionalFormula(expr)
+        if not form.is_valid():
+            return
+
+        form.store_as_exp_tree()
+
+        atoms = []
+
+        for ch in expr:
+            if ch.isalpha() == True and ch not in atoms:
+                atoms.append(ch)
+                
+        form.proposition_type(atoms)
     
     def __exp_tree(self):
         print(style.YELLOW("[ ¬ : 1 ][ ∨ : 2 ][ ∧ : 3 ][ → : 4 ][ ↔ : 5 ]") + style.RESET(""))

@@ -141,7 +141,7 @@ class ExpressionTree:
         a truth value. It also shows the steps
         """
         if self.root != None:
-            self.root.evaluate(value_dict, show_steps)
+            return self.root.evaluate(value_dict, show_steps)[0]
         else:
             print("Empty expression!")
 

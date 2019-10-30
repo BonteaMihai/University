@@ -44,3 +44,9 @@ are reached, the value of the respective atoms are returned from a dictionary gi
 - program shows all steps in the evaluating process:
 
 ![Untitled](https://user-images.githubusercontent.com/51800513/67838186-646a4e80-faf9-11e9-9e55-06b3e3ee6ecb.png)
+
+## Update
+
+- Now can check whether a given propositional formula is tautology/satisfiable/inconsistent
+
+![a](https://user-images.githubusercontent.com/51800513/67840901-9383be80-faff-11e9-8c21-209851fccbd5.png)

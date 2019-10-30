@@ -1,5 +1,6 @@
 from InfixToPostfix import Conversion
 from ExpressionTree import *
+import copy
 
 class WFPropositionalFormula:
 
@@ -43,6 +44,7 @@ class WFPropositionalFormula:
         else:
             print("String is a well formed propositional formula!")
             return True
+
     def store_as_exp_tree(self):
         # If it is a well formed propositional formula, convert it to postfix and 
         # Store it a an expression tree, before returning True
@@ -55,6 +57,45 @@ class WFPropositionalFormula:
     def compute_truth_value(self, value_dict):
         self.__expression_tree.comp_truth_value(value_dict, True)
     
+    def proposition_type(self, atoms):
+        self.__interpretations = []
+        self.__atoms = atoms
+
+        self.__back({}, 0)
+
+        #print(self.__interpretations)
+
+        all_true = True
+        one_true = False
+
+
+        for intr in self.__interpretations:
+            if self.__expression_tree.comp_truth_value(intr, False) == False:
+                all_true = False
+            else:
+                one_true = True
+        
+        if all_true == True:
+            print("The propositional formula given is valid(tautology)!")
+        elif one_true == True:
+            print("The propositional formula given is satisfiable!")
+        else:
+            print("The propositional formula given is inconsistent!")
+
+    def __back(self, value_dict, pos):
+        
+        if pos == len(self.__atoms):
+            obj = copy.deepcopy(value_dict)
+            self.__interpretations.append(obj)
+        else:
+
+            value_dict[self.__atoms[pos]] = True
+            self.__back(value_dict, pos + 1)
+
+            value_dict[self.__atoms[pos]] = False
+            self.__back(value_dict, pos + 1)
+
+
     def print_exp_tree(self):
         if self.__expression_tree != None:
             self.__expression_tree.inorder_traversal()
