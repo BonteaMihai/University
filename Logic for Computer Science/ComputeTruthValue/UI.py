@@ -15,6 +15,7 @@ class UserInterface():
     def __convert_str(self, user_input):
         """
         Replaces [1, 2, 3, 4, 5] with the respective connectives for the given string
+        Removes whitespaces and newline characters that are left from reading from file
         Returns the list with the modifications
         """
         user_input = user_input.replace('1', '¬')
@@ -30,6 +31,10 @@ class UserInterface():
         return user_input
 
     def __truth_value_ui(self):
+        """
+        Reads a string from file. If it is a WFF it also reads an interpretation, and then
+        computes the truth value of the proposition with respect to the given interpretation
+        """
         try:
             with open(self.__filename, "r") as file:
                 expr = file.readline()
@@ -64,6 +69,10 @@ class UserInterface():
             pass
     
     def __proposition_type(self):
+        """
+        Reads a string from file. If it is a WFF, it tests whether it is a tautology, satisfiable,
+        or inconsistent.
+        """
         try:
             with open(self.__filename, "r") as file:
                 expr = file.readline()
@@ -89,6 +98,10 @@ class UserInterface():
         form.proposition_type(atoms)
     
     def __exp_tree(self):
+        """
+        Prompts the user to enter a string representing a WFF, then stores the proposition as an
+        expression tree
+        """
         print(style.YELLOW("[ ¬ : 1 ][ ∨ : 2 ][ ∧ : 3 ][ → : 4 ][ ↔ : 5 ]") + style.RESET(""))
         expr = input(style.BLUE("Insert your expression(with the help of the table above: ") + style.RESET(""))
         expr = self.__convert_str(expr)

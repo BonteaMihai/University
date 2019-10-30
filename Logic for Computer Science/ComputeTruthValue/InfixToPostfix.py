@@ -59,7 +59,7 @@ class Conversion:
                 else: 
                     self.pop() 
   
-            # Operator 
+            # Operator
             else: 
                 while not self.isEmpty() and self.not_greater(c): 
                     self.output.append(self.pop()) 

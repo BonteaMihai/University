@@ -55,9 +55,19 @@ class WFPropositionalFormula:
         return True
     
     def compute_truth_value(self, value_dict):
+        """
+        Computes the truth value of the proposition under the interpretation given by the
+        dictionary value_dict
+        """
         self.__expression_tree.comp_truth_value(value_dict, True)
     
     def proposition_type(self, atoms):
+        """
+        Uses the utility function __back generate all possible interpretations for a
+        proposition, then computes the truth value of the proposition with respect to those
+        interpretations, in order to determine whether it's a tautology/satisfiable/inconsistent
+        """   
+
         self.__interpretations = []
         self.__atoms = atoms
 
@@ -83,6 +93,10 @@ class WFPropositionalFormula:
             print("The propositional formula given is inconsistent!")
 
     def __back(self, value_dict, pos):
+        """
+        Utility function, creates all possible interpretations and stores them into the class variable
+        self.__interpretations
+        """
         
         if pos == len(self.__atoms):
             obj = copy.deepcopy(value_dict)
@@ -97,6 +111,9 @@ class WFPropositionalFormula:
 
 
     def print_exp_tree(self):
+        """
+        Prints the expression tree associated to the proposition
+        """
         if self.__expression_tree != None:
             self.__expression_tree.inorder_traversal()
 
