@@ -77,9 +77,23 @@ class ExpressionTree:
         if self.root != None:
             self.root.inorder()
 
+def pprint_tree(node,  _prefix = "", _last = True):
+    print(_prefix, "`- " if _last else "|- ", node.value, sep="")
+    _prefix += "   " if _last else "|  "
+
+    if node.left != None:
+        _last = node.right == None
+        pprint_tree(node.left, _prefix, _last)
+
+    if node.right != None:
+        pprint_tree(node.right, _prefix, True)
+
 
 def test():
     et = ExpressionTree("A¬CD∧∨A¬∨")
     et.inorder_traversal()
 
-#test() 
+    print()
+    pprint_tree(et.root)
+
+test() 
