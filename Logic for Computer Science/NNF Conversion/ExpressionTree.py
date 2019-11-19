@@ -149,6 +149,9 @@ class ExpressionTree:
 
         # Applying the annihilation laws
         self.__annihilation_laws()
+
+        # Applying the laws of true and false
+        self.__true_false_laws()
         
         # Applying the reduction laws to eliminate equivalences and implications
         self.__reduction_laws()
@@ -316,12 +319,58 @@ class ExpressionTree:
     """ Laws of True and False functions """
 
     def __true_false_laws(self):
-        pass
+        self.root = self.__apply_true_false(self.root)
 
     def __apply_true_false(self, node):
         
-        pass
+        # Binary connective
+        if node.value in self.__connectives:
+            node.left = self.__apply_true_false(node.left)
+            node.right = self.__apply_true_false(node.right)
+        
+        # Unary connective
+        elif node.value == self.__negation:
+            node.left = self.__apply_true_false(node.left)
+        # Atom
+        else:
+            return node
 
+        # Negation
+        if node.value == self.__negation:
+            if node.left.value == '⊤':
+                node.value = '⊥'
+                node.left = None
+                return node
+            elif node.left.value == '⊥':
+                node.value = '⊤'
+                node.left = None
+                return node
+        # Disjunction
+        elif node.value == '∨':
+            if node.left.value == '⊥':
+                return node.right
+            elif node.right.value == '⊥':
+                return node.left
+            elif node.left.value == '⊤':
+                return node.left
+            elif node.right.value == '⊤':
+                return node.right
+        # Conjunction
+        elif node.value == '∧':
+            if node.left.value == '⊤':
+                return node.right
+            elif node.right.value == '⊤':
+                return node.left
+            elif node.left.value == '⊥':
+                return node.left
+            elif node.right.value == '⊥':
+                return node.right
+        # Implication
+        elif node.value == '→' and (node.left.value == '⊥' or node.right.value == '⊤'):
+            if node.left.value == '⊥':
+                node.value = '⊤'
+                node.left = None
+                return node
 
     def inorder_traversal(self):
         if self.root != None:
