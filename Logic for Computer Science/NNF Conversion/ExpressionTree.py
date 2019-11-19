@@ -146,6 +146,9 @@ class ExpressionTree:
 
         # Applying the idempocy laws
         self.__idempocy_laws()
+
+        # Applying the annihilation laws
+        self.__annihilation_laws()
         
         # Applying the reduction laws to eliminate equivalences and implications
         self.__reduction_laws()
@@ -244,6 +247,81 @@ class ExpressionTree:
             return (node, '(' + node.value + str_left + ')')
         else:
             return (node, node.value)
+
+    """ ########################################################################### """
+    """ Annihilation laws functions """
+
+    def __annihilation_laws(self):
+        self.__apply_annihilation(self.root)
+
+    def __apply_annihilation(self, node):
+        str_left = ""
+        str_right = ""
+
+        # Binary connectives
+        if node.value in self.__connectives:
+            str_left = self.__apply_annihilation(node.left)
+            str_right = self.__apply_annihilation(node.right)
+        # Unary connective
+        elif node.value == self.__negation:
+            str_left = self.__apply_annihilation(node.left)
+        # Atom
+        else:
+            return node.value
+        
+        # Implication + Annihilation
+        if node.value == '→' and str_left == str_right:
+            # Changing the value of the node to 'T'
+            node.value = '⊤'
+            
+            # Deleting the children nodes
+            node.left = None
+            node.right = None
+
+            return node.value
+        
+        # Disjunction + Annihilation
+        elif node.value == '∨' and ('(¬' + str_left + ')' == str_right or str_left == '(¬' + str_right + ')'):
+            # Changing the value of the node to 'T'
+            node.value = '⊤'
+
+            # Deleting the children nodes
+            node.left = None
+            node.right = None
+
+            return node.value
+        
+        # Conjunction + Annihilation
+        elif node.value == '∧' and ('(¬' + str_left + ')' == str_right or str_left == '(¬' + str_right + ')'):
+            # Changing the value of the node to '⊥'
+            node.value = '⊥'
+
+            # Deleting the children nodes
+            node.left = None
+            node.right = None
+
+            return node.value
+        
+        # Binary connective
+        elif node.value in self.__connectives:
+            return '(' + str_left + node.value + str_right + ')'
+        # Unary connective(negation)
+        elif node.value == self.__negation:
+            return '(' + node.value + str_left + ')'
+        # Atom
+        else:
+            return node.value
+    
+    """ ########################################################################### """
+    """ Laws of True and False functions """
+
+    def __true_false_laws(self):
+        pass
+
+    def __apply_true_false(self, node):
+        
+        pass
+
 
     def inorder_traversal(self):
         if self.root != None:
