@@ -30,7 +30,6 @@ class UserInterface():
         user_input = user_input.replace('\n', '')
         user_input = user_input.strip()
 
-
         return user_input
 
     def __truth_value_ui(self):

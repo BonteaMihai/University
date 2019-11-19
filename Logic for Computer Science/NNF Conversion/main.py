@@ -90,12 +90,13 @@ class WFPropositionalFormula:
         Prints the expression tree associated to the proposition
         """
         if self.__expression_tree != None:
-            self.__expression_tree.inorder_traversal()
+            #self.__expression_tree.inorder_traversal()
             self.__expression_tree.inorder_parentheses()
     
     def convert_to_NNF(self):
         if self.__expression_tree != None:
-            self.__expression_tree.reduce_eq_wrapper()
+            self.__expression_tree.convert_to_NNF()
+            
 
 """
 form1 = WFPropositionalFormula("(A∨B)")

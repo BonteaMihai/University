@@ -141,11 +141,26 @@ class ExpressionTree:
         t = stack.pop() 
      
         return t 
-    
-    def reduce_eq_wrapper(self):
-        self.reduce_eq(self.root)
 
-    def reduce_eq(self, node):
+    def convert_to_NNF(self):
+
+        # Applying the idempocy laws
+        self.__idempocy_laws()
+        
+        # Applying the reduction laws to eliminate equivalences and implications
+        self.__reduction_laws()
+        
+    """ ########################################################################### """
+    """ Reduction laws functions """
+
+    def __reduction_laws(self):
+        self.__reduce_eq_wrapper()
+        self.__reduce_impl_wrapper()
+
+    def __reduce_eq_wrapper(self):
+        self.__reduce_eq(self.root)
+
+    def __reduce_eq(self, node):
         
         if node.value == '↔':
 
@@ -169,13 +184,66 @@ class ExpressionTree:
             node.right = new_right
 
             # Call the function for the new left child(will update for right sub-tree too since references)
-            self.reduce_eq(node.left)
+            self.__reduce_eq(node.left)
         
         else:
             if node.left != None:
-                self.reduce_eq(node.left)
+                self.__reduce_eq(node.left)
             if node.right != None:
-                self.reduce_eq(node.right)
+                self.__reduce_eq(node.right)
+
+    def __reduce_impl_wrapper(self):
+        self.__reduce_impl(self.root)
+    
+    def __reduce_impl(self, node):
+        if node.value == '→':
+            # Changing the node value to '∨'
+            node.value = '∨'
+
+            # Creating a new left child for the current node, containing '¬'
+            new_left = ExpressionTreeNode('¬')
+            new_left.left = node.left
+
+            # Updating the children of node
+            node.left = new_left
+
+        # Call the function for its children
+        if node.left != None:
+            self.__reduce_impl(node.left)
+        if node.right != None:
+            self.__reduce_impl(node.right)
+
+    """ ########################################################################### """
+    """ Idempocy laws functions """
+
+    def __idempocy_laws(self):
+        self.root, string = self.__apply_idempocy(self.root)
+
+    def __apply_idempocy(self, node):
+        str_left = ""
+        str_right = ""
+
+        # Binary connectives
+        if node.value in self.__connectives:
+            node.left, str_left = self.__apply_idempocy(node.left)
+            node.right, str_right = self.__apply_idempocy(node.right)
+        # Unary connective
+        elif node.value == self.__negation:
+            node.left, str_left = self.__apply_idempocy(node.left)
+        # Atom
+        else:
+            return (node, node.value)
+
+        # Or / And connective
+        if (node.value == '∨' or node.value == '∧') and str_left == str_right:
+            # Return the node containing the child(Apply idempocy)
+            return (node.left, str_left)
+        elif node.value in self.__connectives:
+            return (node, '(' + str_left + node.value + str_right + ')')
+        elif node.value == self.__negation:
+            return (node, '(' + node.value + str_left + ')')
+        else:
+            return (node, node.value)
 
     def inorder_traversal(self):
         if self.root != None:
