@@ -155,6 +155,9 @@ class ExpressionTree:
         
         # Applying the reduction laws to eliminate equivalences and implications
         self.__reduction_laws()
+
+        # Applying the negation laws
+        self.__negation_laws()
         
     """ ########################################################################### """
     """ Reduction laws functions """
@@ -371,6 +374,51 @@ class ExpressionTree:
                 node.value = '⊤'
                 node.left = None
                 return node
+        
+        return node
+
+    """ ########################################################################### """
+    """ Negation functions """
+
+    def __negation_laws(self):
+        self.root = self.__apply_de_morgan(self.root)
+
+    def __apply_de_morgan(self, node):
+        # Binary operator
+        if node.value in self.__connectives:
+            node.left = self.__apply_de_morgan(node.left)
+            node.right = self.__apply_de_morgan(node.right)
+        # Unary operator
+        elif node.value == self.__negation:
+            node.left = self.__apply_de_morgan(node.left)
+        # Atom
+        else:
+            return node
+        
+        if node.value == self.__negation:
+    
+            if node.left.value == '∨' or node.left.value == '∧':
+                # Flip the connective
+                if node.left.value == '∨':
+                    node.left.value = '∧'
+                else:
+                    node.left.value = '∨'
+
+                # Creating nodes containing negation
+                new_left = ExpressionTreeNode('¬')
+                new_right = ExpressionTreeNode('¬')
+
+                # Setting children of negations
+                new_left.left = node.left.left
+                new_right.left = node.left.right
+
+                # Updating the children of the former disjunction
+                node.left.left = new_left
+                node.left.right = new_right
+
+                return node.left
+        
+        return node
 
     def inorder_traversal(self):
         if self.root != None:
