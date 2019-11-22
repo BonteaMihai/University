@@ -119,9 +119,9 @@ class UserInterface():
         expr = self.__convert_str(expr)
         print(expr)
         form = WFPropositionalFormula(expr)
-        form.is_WFF()
-        form.store_as_exp_tree()
-        form.convert_to_NNF()
+        if form.is_WFF() == True:
+            form.store_as_exp_tree()
+            form.convert_to_NNF()
 
     def __print_menu(self):
         print(style.BLUE("\n\nChoose one of the following options: ") + style.RESET(""))
