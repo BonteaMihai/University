@@ -142,7 +142,7 @@ class ExpressionTree:
         return t 
 
     def convert_to_NNF(self, show_steps):
-
+        
         # Applying the idempocy laws
         self.__idempocy_laws(show_steps)
 
@@ -155,8 +155,16 @@ class ExpressionTree:
         # Applying the reduction laws to eliminate equivalences and implications
         self.__reduction_laws(show_steps)
 
-        # Applying the negation laws
-        self.__negation_laws(show_steps)
+        # Keeps track of whether the loop modifies the formula: we stop when it doesn't
+        self.__global_modified_flag = True
+
+        while self.__global_modified_flag == True:
+            self.__global_modified_flag = False
+
+            self.__idempocy_laws(show_steps)
+            self.__annihilation_laws(show_steps)
+            self.__true_false_laws(show_steps)
+            self.__negation_laws(show_steps)
         
     """ ###########################################################################
                                 Reduction laws functions
@@ -252,6 +260,7 @@ class ExpressionTree:
         if show_steps == True and self.__modified_flag == True:
             print(style.GREEN("Applying idempocy laws: F∧F ~ F, F∨F ~ F") + style.RESET(""))
             self.inorder_parentheses()
+            self.__global_modified_flag = True
 
     def __apply_idempocy(self, node):
         str_left = ""
@@ -293,6 +302,7 @@ class ExpressionTree:
         if show_steps == True and self.__modified_flag == True:
             print(style.GREEN("Applying annihilation laws: F∨¬F ~ ⊤, F∧¬F ~ ⊥") + style.RESET(""))
             self.inorder_parentheses()
+            self.__global_modified_flag = True
 
     def __apply_annihilation(self, node):
         str_left = ""
@@ -370,6 +380,7 @@ class ExpressionTree:
         if show_steps == True and self.__modified_flag == True:
             print(style.GREEN("Applying laws of 'True' and 'False': ") + style.RESET(""))
             self.inorder_parentheses()
+            self.__global_modified_flag = True
 
     def __apply_true_false(self, node):
         
@@ -458,6 +469,7 @@ class ExpressionTree:
         if show_steps == True and self.__modified_flag == True:
             print(style.GREEN("Removing double negations: ¬(¬F) ~ F") + style.RESET(""))
             self.inorder_parentheses()
+            self.__global_modified_flag = True
 
         # Initializing the modified flag with False
         self.__modified_flag = False
@@ -466,6 +478,7 @@ class ExpressionTree:
         if show_steps == True and self.__modified_flag == True:
             print(style.GREEN("Applying De Morgan's laws: ¬(F∨G) ~ ¬F∧¬G, ¬(F∧G) ~ ¬G∨¬F") + style.RESET("")) 
             self.inorder_parentheses()
+            self.__global_modified_flag = True
 
         # Initializing the modified flag with False
         self.__modified_flag = False
@@ -474,6 +487,7 @@ class ExpressionTree:
         if show_steps == True and self.__modified_flag == True:
             print(style.GREEN("Applying other negations: ¬(F→G) ~ F∧(¬G), ¬(F↔G) ~ F↔(¬G)") + style.RESET(""))
             self.inorder_parentheses()
+            self.__global_modified_flag = True
 
     def __apply_de_morgan(self, node):
         # Binary operator
