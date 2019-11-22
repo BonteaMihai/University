@@ -142,39 +142,39 @@ class ExpressionTree:
      
         return t 
 
-    def convert_to_NNF(self):
+    def convert_to_NNF(self, show_steps):
 
         # Applying the idempocy laws
-        self.__idempocy_laws()
-
-        self.inorder_parentheses()
+        self.__idempocy_laws(show_steps)
 
         # Applying the annihilation laws
-        self.__annihilation_laws()
-
-        self.inorder_parentheses()
+        self.__annihilation_laws(show_steps)
 
         # Applying the laws of true and false
-        self.__true_false_laws()
-
-        self.inorder_parentheses()
+        self.__true_false_laws(show_steps)
         
         # Applying the reduction laws to eliminate equivalences and implications
-        self.__reduction_laws()
-
-        self.inorder_parentheses()
+        self.__reduction_laws(show_steps)
 
         # Applying the negation laws
-        self.__negation_laws()
-
-        self.inorder_parentheses()
+        self.__negation_laws(show_steps)
         
-    """ ########################################################################### """
-    """ Reduction laws functions """
+    """ ###########################################################################
+                                Reduction laws functions
+    """
 
-    def __reduction_laws(self):
+    def __reduction_laws(self, show_steps):
         self.__reduce_eq_wrapper()
+
+        if show_steps == True:
+            print("Reducing equivalences: (F↔G) ~ (F→G)∧(G→F)")
+            self.inorder_parentheses()
+
         self.__reduce_impl_wrapper()
+        
+        if show_steps == True:
+            print("Reducing implications: (F→G) ~ (¬F∨G)")
+            self.inorder_parentheses()
 
     def __reduce_eq_wrapper(self):
         self.__reduce_eq(self.root)
@@ -232,11 +232,16 @@ class ExpressionTree:
         if node.right != None:
             self.__reduce_impl(node.right)
 
-    """ ########################################################################### """
-    """ Idempocy laws functions """
+    """ ###########################################################################
+                                Idempocy laws functions
+    """
 
-    def __idempocy_laws(self):
+    def __idempocy_laws(self, show_steps):
         self.root, string = self.__apply_idempocy(self.root)
+
+        if show_steps == True:
+            print("Applying idempocy laws: F∧F ~ F, F∨F ~ F")
+            self.inorder_parentheses()
 
     def __apply_idempocy(self, node):
         str_left = ""
@@ -264,11 +269,16 @@ class ExpressionTree:
         else:
             return (node, node.value)
 
-    """ ########################################################################### """
-    """ Annihilation laws functions """
+    """ ###########################################################################
+                                Annihilation laws functions 
+    """
 
-    def __annihilation_laws(self):
+    def __annihilation_laws(self, show_steps):
         self.__apply_annihilation(self.root)
+        
+        if show_steps == True:
+            print("Applying annihilation laws: F∨¬F ~ ⊤, F∧¬F ~ ⊥")
+            self.inorder_parentheses()
 
     def __apply_annihilation(self, node):
         str_left = ""
@@ -328,11 +338,16 @@ class ExpressionTree:
         else:
             return node.value
     
-    """ ########################################################################### """
-    """ Laws of True and False functions """
+    """ ###########################################################################
+                                Laws of True and False functions
+    """
 
-    def __true_false_laws(self):
+    def __true_false_laws(self, show_steps):
         self.root = self.__apply_true_false(self.root)
+
+        if show_steps == True:
+            print("Applying laws of 'True' and 'False': ")
+            self.inorder_parentheses()
 
     def __apply_true_false(self, node):
         
@@ -387,15 +402,28 @@ class ExpressionTree:
         
         return node
 
-    """ ########################################################################### """
-    """ Negation functions """
+    """ ###########################################################################
+                                Negation functions
+    """
 
-    def __negation_laws(self):
+    def __negation_laws(self, show_steps):
         self.root = self.__apply_double_negation(self.root)
 
+        if show_steps == True:
+            print("Removing double negations: ¬(¬F) ~ F")
+            self.inorder_parentheses()
+
         self.root = self.__apply_de_morgan(self.root)
+        
+        if show_steps == True:
+            print("Applying De Morgan's laws: ¬(F∨G) ~ ¬F∧¬G, ¬(F∧G) ~ ¬G∨¬F")
+            self.inorder_parentheses()
 
         self.root = self.__apply_other_negation(self.root)
+
+        if show_steps == True:
+            print("Applying other negations: ¬(F→G) ~ F∧(¬G), ¬(F↔G) ~ F↔(¬G)")
+            self.inorder_parentheses()
 
     def __apply_de_morgan(self, node):
         # Binary operator

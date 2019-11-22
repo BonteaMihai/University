@@ -2,7 +2,7 @@
 
 ## Problem statement:
 
-[...]
+Transform a given propositional logic formula into an equivalent formula in Negation Normal Form(NNF)
 
 ## Theory basis:
 

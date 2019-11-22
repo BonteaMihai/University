@@ -10,7 +10,7 @@ class UserInterface():
 
     def __init__(self):
         self.__filename = "example.txt"
-        self.__options = {"1" : self.__truth_value_ui, "2" : self.__exp_tree, "3" : self.__proposition_type, "4" : self.__convert_to_NNF}
+        self.__options = {"1" : self.__convert_to_NNF}
 
     def __convert_str(self, user_input):
         """
@@ -123,12 +123,10 @@ class UserInterface():
         form.store_as_exp_tree()
         form.convert_to_NNF()
         form.print_exp_tree()
-        
-
 
     def __print_menu(self):
         print(style.BLUE("\n\nChoose one of the following options: ") + style.RESET(""))
-        print(style.MAGENTA("2) Store a formula as an expression tree, prints inorder traversal.") + style.RESET(""))
+        print(style.MAGENTA("1) Convert propositional formula to Negation Normal Form(NNF)") + style.RESET(""))
         print(style.RED("Or insert 'exit' to quit") + style.RESET(""))
 
     def start(self):

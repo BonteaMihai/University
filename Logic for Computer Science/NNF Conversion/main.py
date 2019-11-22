@@ -95,7 +95,7 @@ class WFPropositionalFormula:
     
     def convert_to_NNF(self):
         if self.__expression_tree != None:
-            self.__expression_tree.convert_to_NNF()
+            self.__expression_tree.convert_to_NNF(True)
             
 
 """
