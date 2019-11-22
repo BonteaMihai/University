@@ -26,7 +26,10 @@ class Conversion:
   
     # Returns True if character is an operand, False otherwise  
     def isOperand(self, ch): 
-        return ch.isalpha() or ch == '⊥' or ch == '⊤'
+        return (ch.isalpha() and ch.isupper()) or ch == '⊥' or ch == '⊤'
+    
+    def isOperator(self, ch):
+        return ch in ['¬', '∨', '∧', '→', '↔']
   
     # Returns True if the precedence of operator is less than top of the stack, False otherwise
     def not_greater(self, i): 
@@ -92,7 +95,7 @@ class Conversion:
                     self.pop() 
   
             # Operator
-            else:
+            elif self.isOperator(c):
                 if count == len(exp) - 1:
                     print("String is not a WFF: expected WFF/Atom at index " + str(count))
                     return False
@@ -108,7 +111,10 @@ class Conversion:
 
                 while not self.isEmpty() and self.not_greater(c): 
                     self.output.append(self.pop()) 
-                self.push(c) 
+                self.push(c)
+            else:
+                print("String is not a WFF: illegal character at index " + str(count))
+                return False
   
         # pop all the operators left from the stack 
         while not self.isEmpty(): 
