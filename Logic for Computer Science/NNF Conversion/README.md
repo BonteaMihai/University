@@ -51,3 +51,5 @@ negation, only one operator should be popped from the stack.
 * improved the UI: only the laws that actually result in the modification of the formula are now printed, resulting in more readability
 
 * added colors to UI
+
+![Untitled](https://user-images.githubusercontent.com/51800513/69422780-42956d80-0d2d-11ea-8b5d-e94be2dea6d1.png)
