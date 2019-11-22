@@ -45,6 +45,9 @@ and if the current element in the string is an operand, it is pushed onto the st
 and then the root of the new formed tree is pushed onto the stack. A distinction has to be made between unary operators and binary operators, as in the case of
 negation, only one operator should be popped from the stack.
 
+After the abstract syntax tree was built, transforming it into Negation Normal Form is done on the tree by adding or deleting nodes and
+changing the value stored in certain nodes, through a series of function calls.
+
 
 ## Updates:
 
