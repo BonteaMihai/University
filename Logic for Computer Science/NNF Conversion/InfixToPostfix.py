@@ -74,6 +74,11 @@ class Conversion:
                 if open_parentheses < 0:
                     print("String is not a WFF: ')' closed but not opened at index " + str(count))
                     return False
+                
+                if not self.isEmpty() and self.top() == '(':
+                    print("String is not a WFF: redundant parentheses closing at index " + str(count))
+                    return False
+                    
 
                 while not self.isEmpty() and self.top() != '(': 
                     a = self.pop() 
@@ -107,6 +112,9 @@ class Conversion:
         # pop all the operators left from the stack 
         while not self.isEmpty(): 
             self.output.append(self.pop()) 
+        
+        if open_parentheses != 0:
+            print("String is not a WFF: parentheses not closed properly!")
   
         return ("".join(self.output)) 
 
