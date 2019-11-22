@@ -87,6 +87,9 @@ class Conversion:
   
             # Operator
             else:
+                if count == len(exp) - 1:
+                    print("String is not a WFF: expected WFF/Atom at index " + str(count))
+                    return False
                 
                 if c != '¬':
 
