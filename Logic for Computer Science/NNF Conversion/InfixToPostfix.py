@@ -64,6 +64,7 @@ class Conversion:
             #'(', push it to stack
             elif c  == '(': 
                 self.push(c)
+                negation = False
 
                 open_parentheses += 1
   
@@ -115,7 +116,11 @@ class Conversion:
         
         if open_parentheses != 0:
             print("String is not a WFF: parentheses not closed properly!")
-  
+
+        if negation == True:
+            print("String is not a WFF: no atom/WFF after negation!")
+            return False
+
         return ("".join(self.output)) 
 
 """
