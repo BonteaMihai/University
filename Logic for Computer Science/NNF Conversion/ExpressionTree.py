@@ -147,17 +147,27 @@ class ExpressionTree:
         # Applying the idempocy laws
         self.__idempocy_laws()
 
+        self.inorder_parentheses()
+
         # Applying the annihilation laws
         self.__annihilation_laws()
 
+        self.inorder_parentheses()
+
         # Applying the laws of true and false
         self.__true_false_laws()
+
+        self.inorder_parentheses()
         
         # Applying the reduction laws to eliminate equivalences and implications
         self.__reduction_laws()
 
+        self.inorder_parentheses()
+
         # Applying the negation laws
         self.__negation_laws()
+
+        self.inorder_parentheses()
         
     """ ########################################################################### """
     """ Reduction laws functions """
@@ -381,7 +391,11 @@ class ExpressionTree:
     """ Negation functions """
 
     def __negation_laws(self):
+        self.root = self.__apply_double_negation(self.root)
+
         self.root = self.__apply_de_morgan(self.root)
+
+        self.root = self.__apply_other_negation(self.root)
 
     def __apply_de_morgan(self, node):
         # Binary operator
@@ -419,6 +433,70 @@ class ExpressionTree:
                 return node.left
         
         return node
+
+    def __apply_other_negation(self, node):
+        # Binary operator
+        if node.value in self.__connectives:
+            node.left = self.__apply_other_negation(node.left)
+            node.right = self.__apply_other_negation(node.right)
+        # Unary operator
+        elif node.value == self.__negation:
+            node.left = self.__apply_other_negation(node.left)
+        # Atom
+        else:
+            return node
+        
+        if node.value == self.__negation:
+        
+            if node.left.value == '→' or node.left.value == '↔':
+                # Flip the connective in the case of implication
+                if node.left.value == '→':
+                    node.left.value = '∧'
+
+                # Creating a new node containig negation
+                new_right = ExpressionTreeNode('¬')
+
+                # Setting child of negation
+                new_right.left = node.left.right
+
+                # Updating the child of the former implication/equivalence
+                node.left.right = new_right
+
+                return node.left
+        
+        return node
+        
+    def __apply_double_negation(self, node):
+        
+        # Negation
+        if node.value == self.__negation:
+
+            count = 1
+            current_node = node
+
+            # Reaching the last negation in the tree, and counting their amount
+            while current_node.left.value == self.__negation:
+                count += 1
+                current_node = current_node.left
+
+            # Recur down the tree first
+            current_node.left = self.__apply_double_negation(current_node.left)
+
+            # If there is an even amount of negations, return the child of the last negation
+            if count % 2 == 0:
+                return current_node.left
+            # Else return the last negation in the subtree
+            else:
+                return current_node
+
+        # Other binary connectives
+        elif node.value in self.__connectives:
+            node.left = self.__apply_double_negation(node.left)
+            node.right = self.__apply_double_negation(node.right)
+        # Atoms
+        return node
+
+    """ ########################################################################### """
 
     def inorder_traversal(self):
         if self.root != None:
