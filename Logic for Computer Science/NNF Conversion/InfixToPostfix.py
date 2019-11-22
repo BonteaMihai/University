@@ -116,6 +116,7 @@ class Conversion:
         
         if open_parentheses != 0:
             print("String is not a WFF: parentheses not closed properly!")
+            return False
 
         if negation == True:
             print("String is not a WFF: no atom/WFF after negation!")
