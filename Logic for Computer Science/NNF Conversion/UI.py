@@ -122,7 +122,6 @@ class UserInterface():
         form.is_WFF()
         form.store_as_exp_tree()
         form.convert_to_NNF()
-        form.print_exp_tree()
 
     def __print_menu(self):
         print(style.BLUE("\n\nChoose one of the following options: ") + style.RESET(""))

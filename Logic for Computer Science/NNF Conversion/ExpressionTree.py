@@ -1,6 +1,5 @@
-# Python program for expression tree 
-
-# An expression tree node 
+# An expression tree node
+from COLORS import style 
 class ExpressionTreeNode: 
 
     # Constructor to create a node 
@@ -164,16 +163,20 @@ class ExpressionTree:
     """
 
     def __reduction_laws(self, show_steps):
+        # Initializing the modified flag with False
+        self.__modified_flag = False
         self.__reduce_eq_wrapper()
-
-        if show_steps == True:
-            print("Reducing equivalences: (F↔G) ~ (F→G)∧(G→F)")
+        
+        if show_steps == True and self.__modified_flag == True:
+            print(style.GREEN("Reducing equivalences: (F↔G) ~ (F→G)∧(G→F)") + style.RESET(""))
             self.inorder_parentheses()
 
+        # Initializing the modified flag with False
+        self.__modified_flag = False
         self.__reduce_impl_wrapper()
         
-        if show_steps == True:
-            print("Reducing implications: (F→G) ~ (¬F∨G)")
+        if show_steps == True and self.__modified_flag == True:
+            print(style.GREEN("Reducing implications: (F→G) ~ (¬F∨G)") + style.RESET(""))
             self.inorder_parentheses()
 
     def __reduce_eq_wrapper(self):
@@ -182,6 +185,8 @@ class ExpressionTree:
     def __reduce_eq(self, node):
         
         if node.value == '↔':
+            # Setting the modified flag to True
+            self.__modified_flag = True
 
             #Changing the node value to '∧'
             node.value = '∧'
@@ -216,6 +221,9 @@ class ExpressionTree:
     
     def __reduce_impl(self, node):
         if node.value == '→':
+            # Setting the modified flag to True
+            self.__modified_flag = True
+
             # Changing the node value to '∨'
             node.value = '∨'
 
@@ -237,10 +245,12 @@ class ExpressionTree:
     """
 
     def __idempocy_laws(self, show_steps):
+        # Initializing the modified flag with False
+        self.__modified_flag = False
         self.root, string = self.__apply_idempocy(self.root)
 
-        if show_steps == True:
-            print("Applying idempocy laws: F∧F ~ F, F∨F ~ F")
+        if show_steps == True and self.__modified_flag == True:
+            print(style.GREEN("Applying idempocy laws: F∧F ~ F, F∨F ~ F") + style.RESET(""))
             self.inorder_parentheses()
 
     def __apply_idempocy(self, node):
@@ -261,6 +271,8 @@ class ExpressionTree:
         # Or / And connective
         if (node.value == '∨' or node.value == '∧') and str_left == str_right:
             # Return the node containing the child(Apply idempocy)
+            # Set the modified flag to True
+            self.__modified_flag = True
             return (node.left, str_left)
         elif node.value in self.__connectives:
             return (node, '(' + str_left + node.value + str_right + ')')
@@ -274,10 +286,12 @@ class ExpressionTree:
     """
 
     def __annihilation_laws(self, show_steps):
+        # Initializing the modified flag with False
+        self.__modified_flag = False
         self.__apply_annihilation(self.root)
         
-        if show_steps == True:
-            print("Applying annihilation laws: F∨¬F ~ ⊤, F∧¬F ~ ⊥")
+        if show_steps == True and self.__modified_flag == True:
+            print(style.GREEN("Applying annihilation laws: F∨¬F ~ ⊤, F∧¬F ~ ⊥") + style.RESET(""))
             self.inorder_parentheses()
 
     def __apply_annihilation(self, node):
@@ -297,6 +311,8 @@ class ExpressionTree:
         
         # Implication + Annihilation
         if node.value == '→' and str_left == str_right:
+            # Setting the modified flag to True
+            self.__modified_flag = True
             # Changing the value of the node to 'T'
             node.value = '⊤'
             
@@ -308,6 +324,8 @@ class ExpressionTree:
         
         # Disjunction + Annihilation
         elif node.value == '∨' and ('(¬' + str_left + ')' == str_right or str_left == '(¬' + str_right + ')'):
+            # Setting the modified flag to True
+            self.__modified_flag = True
             # Changing the value of the node to 'T'
             node.value = '⊤'
 
@@ -319,6 +337,8 @@ class ExpressionTree:
         
         # Conjunction + Annihilation
         elif node.value == '∧' and ('(¬' + str_left + ')' == str_right or str_left == '(¬' + str_right + ')'):
+            # Setting the modified flag to True
+            self.__modified_flag = True
             # Changing the value of the node to '⊥'
             node.value = '⊥'
 
@@ -343,10 +363,12 @@ class ExpressionTree:
     """
 
     def __true_false_laws(self, show_steps):
+        # Initializing the modified flag with False
+        self.__modified_flag = False
         self.root = self.__apply_true_false(self.root)
 
-        if show_steps == True:
-            print("Applying laws of 'True' and 'False': ")
+        if show_steps == True and self.__modified_flag == True:
+            print(style.GREEN("Applying laws of 'True' and 'False': ") + style.RESET(""))
             self.inorder_parentheses()
 
     def __apply_true_false(self, node):
@@ -366,36 +388,58 @@ class ExpressionTree:
         # Negation
         if node.value == self.__negation:
             if node.left.value == '⊤':
+                # Setting the modified flag to True
+                self.__modified_flag = True
                 node.value = '⊥'
                 node.left = None
                 return node
             elif node.left.value == '⊥':
+                # Setting the modified flag to True
+                self.__modified_flag = True
                 node.value = '⊤'
                 node.left = None
                 return node
         # Disjunction
         elif node.value == '∨':
             if node.left.value == '⊥':
+                # Setting the modified flag to True
+                self.__modified_flag = True
                 return node.right
             elif node.right.value == '⊥':
+                # Setting the modified flag to True
+                self.__modified_flag = True 
                 return node.left
             elif node.left.value == '⊤':
+                # Setting the modified flag to True
+                self.__modified_flag = True
                 return node.left
             elif node.right.value == '⊤':
+                # Setting the modified flag to True
+                self.__modified_flag = True
                 return node.right
         # Conjunction
         elif node.value == '∧':
             if node.left.value == '⊤':
+                # Setting the modified flag to True
+                self.__modified_flag = True
                 return node.right
             elif node.right.value == '⊤':
+                # Setting the modified flag to True
+                self.__modified_flag = True
                 return node.left
             elif node.left.value == '⊥':
+                # Setting the modified flag to True
+                self.__modified_flag = True
                 return node.left
             elif node.right.value == '⊥':
+                # Setting the modified flag to True
+                self.__modified_flag = True
                 return node.right
         # Implication
         elif node.value == '→' and (node.left.value == '⊥' or node.right.value == '⊤'):
             if node.left.value == '⊥':
+                # Setting the modified flag to True
+                self.__modified_flag = True
                 node.value = '⊤'
                 node.left = None
                 return node
@@ -407,22 +451,28 @@ class ExpressionTree:
     """
 
     def __negation_laws(self, show_steps):
+        # Initializing the modified flag with False
+        self.__modified_flag = False
         self.root = self.__apply_double_negation(self.root)
 
-        if show_steps == True:
-            print("Removing double negations: ¬(¬F) ~ F")
+        if show_steps == True and self.__modified_flag == True:
+            print(style.GREEN("Removing double negations: ¬(¬F) ~ F") + style.RESET(""))
             self.inorder_parentheses()
 
+        # Initializing the modified flag with False
+        self.__modified_flag = False
         self.root = self.__apply_de_morgan(self.root)
         
-        if show_steps == True:
-            print("Applying De Morgan's laws: ¬(F∨G) ~ ¬F∧¬G, ¬(F∧G) ~ ¬G∨¬F")
+        if show_steps == True and self.__modified_flag == True:
+            print(style.GREEN("Applying De Morgan's laws: ¬(F∨G) ~ ¬F∧¬G, ¬(F∧G) ~ ¬G∨¬F") + style.RESET("")) 
             self.inorder_parentheses()
 
+        # Initializing the modified flag with False
+        self.__modified_flag = False
         self.root = self.__apply_other_negation(self.root)
 
-        if show_steps == True:
-            print("Applying other negations: ¬(F→G) ~ F∧(¬G), ¬(F↔G) ~ F↔(¬G)")
+        if show_steps == True and self.__modified_flag == True:
+            print(style.GREEN("Applying other negations: ¬(F→G) ~ F∧(¬G), ¬(F↔G) ~ F↔(¬G)") + style.RESET(""))
             self.inorder_parentheses()
 
     def __apply_de_morgan(self, node):
@@ -440,6 +490,9 @@ class ExpressionTree:
         if node.value == self.__negation:
     
             if node.left.value == '∨' or node.left.value == '∧':
+                # Set the modified flag to True
+                self.__modified_flag = True
+
                 # Flip the connective
                 if node.left.value == '∨':
                     node.left.value = '∧'
@@ -477,6 +530,9 @@ class ExpressionTree:
         if node.value == self.__negation:
         
             if node.left.value == '→' or node.left.value == '↔':
+                # Set the modified flag to True
+                self.__modified_flag = True
+
                 # Flip the connective in the case of implication
                 if node.left.value == '→':
                     node.left.value = '∧'
@@ -506,6 +562,10 @@ class ExpressionTree:
             while current_node.left.value == self.__negation:
                 count += 1
                 current_node = current_node.left
+            
+            if count > 1:
+                # Set the modified flag to True
+                self.__modified_flag = True
 
             # Recur down the tree first
             current_node.left = self.__apply_double_negation(current_node.left)
@@ -532,7 +592,7 @@ class ExpressionTree:
     
     def inorder_parentheses(self):
         if self.root != None:
-            print(self.root.inorder_parentheses())
+            print(style.CYAN(self.root.inorder_parentheses()) + style.RESET(""))
 
     def comp_truth_value(self, value_dict, show_steps):
         """
@@ -544,7 +604,6 @@ class ExpressionTree:
             return self.root.evaluate(value_dict, show_steps)[0]
         else:
             print("Empty expression!")
-
 
 def test():
     et = ExpressionTree("A¬CD∧∨A¬∨")

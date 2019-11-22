@@ -45,3 +45,9 @@ and if the current element in the string is an operand, it is pushed onto the st
 and then the root of the new formed tree is pushed onto the stack. A distinction has to be made between unary operators and binary operators, as in the case of
 negation, only one operator should be popped from the stack.
 
+
+## Updates:
+
+* improved the UI: only the laws that actually result in the modification of the formula are now printed, resulting in more readability
+
+* added colors to UI
