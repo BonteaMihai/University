@@ -51,11 +51,14 @@ class Conversion:
         open_parentheses = 0    # Grows with 1 when encountering '('
                                 # Decreases with 1 when encountering ')'
                                 # String is not a WFF if the variable at any point goes below 0 or above 1
+        
+        last_connective = -1
 
 
         for count, c in enumerate(exp): 
             # Operand, add it to output 
-            if self.isOperand(c): 
+            if self.isOperand(c):
+                last_connective = -1
                 self.output.append(c)
                 
                 negation = False
@@ -82,7 +85,10 @@ class Conversion:
                 if not self.isEmpty() and self.top() == '(':
                     print("String is not a WFF: redundant parentheses closing at index " + str(count))
                     return False
-                    
+                
+                if oprn_oprt < 0 or negation == True:
+                    print("String is not a WFF: expected WFF/Atom at index " + str(count))
+                    return False
 
                 while not self.isEmpty() and self.top() != '(': 
                     a = self.pop() 
@@ -96,6 +102,7 @@ class Conversion:
   
             # Operator
             elif self.isOperator(c):
+                last_connective = count
                 if count == len(exp) - 1:
                     print("String is not a WFF: expected WFF/Atom at index " + str(count))
                     return False
@@ -127,7 +134,11 @@ class Conversion:
         if negation == True:
             print("String is not a WFF: no atom/WFF after negation!")
             return False
-
+        
+        if last_connective != -1:
+            print("String is not a WFF: no atom/WFF for connective at index " + str(last_connective))
+            return False
+        
         return ("".join(self.output)) 
 
 """
