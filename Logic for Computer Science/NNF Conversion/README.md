@@ -49,6 +49,9 @@ After the abstract syntax tree was built, transforming it into Negation Normal F
 changing the value stored in certain nodes, through a series of function calls.
 
 
+![Untitled](https://user-images.githubusercontent.com/51800513/69729243-a6090c00-112e-11ea-9a84-ab039a1b63bd.png)
+
+
 ## Updates:
 
 * improved the UI: only the laws that actually result in the modification of the formula are now printed, resulting in more readability
