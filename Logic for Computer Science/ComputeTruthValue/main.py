@@ -80,7 +80,8 @@ class WFPropositionalFormula:
 
 
         for intr in self.__interpretations:
-            if self.__expression_tree.comp_truth_value(intr, False) == False:
+            if self.__expression_tree.comp_truth_value(intr, True) == False:
+                print()
                 all_true = False
             else:
                 one_true = True

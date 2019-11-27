@@ -96,7 +96,14 @@ class WFPropositionalFormula:
     def convert_to_NNF(self):
         if self.__expression_tree != None:
             self.__expression_tree.convert_to_NNF(True)
-            
+    
+    def convert_to_DNF(self):
+        if self.__expression_tree != None:
+            self.__expression_tree.convert_to_DNF()
+    
+    def convert_to_CNF(self):
+        if self.__expression_tree != None:
+            self.__expression_tree.convert_to_CNF()
 
 """
 form1 = WFPropositionalFormula("(A∨B)")

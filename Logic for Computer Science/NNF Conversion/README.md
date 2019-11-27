@@ -56,3 +56,5 @@ changing the value stored in certain nodes, through a series of function calls.
 * added colors to UI
 
 ![Untitled](https://user-images.githubusercontent.com/51800513/69422780-42956d80-0d2d-11ea-8b5d-e94be2dea6d1.png)
+
+* added converting to DNF and CNF functionality

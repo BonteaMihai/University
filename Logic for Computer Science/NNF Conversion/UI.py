@@ -10,7 +10,7 @@ class UserInterface():
 
     def __init__(self):
         self.__filename = "example.txt"
-        self.__options = {"1" : self.__convert_to_NNF}
+        self.__options = {"1" : self.__convert_to_NNF, "2" : self.__convert_to_DNF, "3" : self.__convert_to_CNF}
 
     def __convert_str(self, user_input):
         """
@@ -122,10 +122,37 @@ class UserInterface():
         if form.is_WFF() == True:
             form.store_as_exp_tree()
             form.convert_to_NNF()
+            form.print_exp_tree()
+    
+    def __convert_to_DNF(self):
+        print(style.YELLOW("[ ¬ : 1 ][ ∨ : 2 ][ ∧ : 3 ][ → : 4 ][ ↔ : 5 ][ ⊤ : 6 ][ ⊥ : 7 ]") + style.RESET(""))
+        expr = input(style.BLUE("Insert your expression(with the help of the table above: ") + style.RESET(""))
+        expr = self.__convert_str(expr)
+        print(expr)
+        form = WFPropositionalFormula(expr)
+        if form.is_WFF() == True:
+            form.store_as_exp_tree()
+            form.convert_to_NNF()
+            form.convert_to_DNF()
+            form.print_exp_tree()
+
+    def __convert_to_CNF(self):
+        print(style.YELLOW("[ ¬ : 1 ][ ∨ : 2 ][ ∧ : 3 ][ → : 4 ][ ↔ : 5 ][ ⊤ : 6 ][ ⊥ : 7 ]") + style.RESET(""))
+        expr = input(style.BLUE("Insert your expression(with the help of the table above: ") + style.RESET(""))
+        expr = self.__convert_str(expr)
+        print(expr)
+        form = WFPropositionalFormula(expr)
+        if form.is_WFF() == True:
+            form.store_as_exp_tree()
+            form.convert_to_NNF()
+            form.convert_to_CNF()
+            form.print_exp_tree()
 
     def __print_menu(self):
         print(style.BLUE("\n\nChoose one of the following options: ") + style.RESET(""))
         print(style.MAGENTA("1) Convert propositional formula to Negation Normal Form(NNF)") + style.RESET(""))
+        print(style.MAGENTA("2) Convert propositional formula to Disjunctive Normal Form(DNF)") + style.RESET(""))
+        print(style.MAGENTA("3) Convert propositional formula to Conjuctive Normal Form(CNF)") + style.RESET(""))
         print(style.RED("Or insert 'exit' to quit") + style.RESET(""))
 
     def start(self):

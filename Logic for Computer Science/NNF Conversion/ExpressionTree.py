@@ -600,6 +600,62 @@ class ExpressionTree:
 
     """ ########################################################################### """
 
+    def convert_to_DNF(self):
+        primary = '∧'
+        secondary = '∨'
+        self.root = self.__apply_tautologies(self.root, primary, secondary)
+
+    def convert_to_CNF(self):
+        primary = '∨'
+        secondary = '∧'
+        self.root = self.__apply_tautologies(self.root, primary, secondary)
+
+    def __apply_tautologies(self, node, primary, secondary):
+        
+        if node.left != None:
+            node.left = self.__apply_tautologies(node.left, primary, secondary)
+        if node.right != None:
+            node.right = self.__apply_tautologies(node.right, primary, secondary)
+
+        if node.value == primary and (node.left != None and node.left.value == secondary):
+            # Changing the value of node.value 
+            node.value = secondary
+
+            # Save the node.left.right
+            temp = node.left.right
+
+            # Changing the value of node.left.value 
+            node.left.value = primary
+            node.left.right = node.right
+
+            # Creating a new node
+            new_right = ExpressionTreeNode(secondary)
+            new_right.left = temp
+            new_right.right = node.right
+
+            node.right = new_right
+
+        elif node.value == primary and (node.right != None and node.right.value == secondary):
+            # Changing the value of node.value 
+            node.value = secondary
+
+            # Save the node.right.right
+            temp = node.right.left
+
+            # Changing the value of node.right.value 
+            node.right.value = primary
+            node.right.left = node.left
+
+            # Creating a new node
+            new_left = ExpressionTreeNode(primary)
+            new_left.left = node.left
+            new_left.right = temp
+
+            node.left = new_left
+
+        return node
+
+
     def inorder_traversal(self):
         if self.root != None:
             self.root.inorder()
