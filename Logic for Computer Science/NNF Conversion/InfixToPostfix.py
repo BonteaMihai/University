@@ -1,41 +1,49 @@
- 
+CONJ = '∧'
+DISJ = '∨'
+IMPL = '→'
+EQUIV = '↔'
+NEG = '¬'
+TOP = '⊤'
+BOT = '⊥'
+CONNECTIVES = [EQUIV, IMPL, DISJ, CONJ]
+
 class Conversion: 
       
     def __init__(self): 
         self.st = [] 
         # Precedence setting 
         self.output = [] 
-        self.precedence = {'¬':5, '∨':4, '∧':3, '→':2, '↔':1} 
+        self.precedence = {NEG : 5, DISJ : 4, CONJ : 3, IMPL : 2, EQUIV : 1} 
       
     # Returns True if stack is empty, False otherwise
-    def isEmpty(self): 
+    def __isEmpty(self): 
         return len(self.st) == 0
       
     # Returns the value at the top of the stack
-    def top(self): 
+    def __top(self): 
         return self.st[-1] 
       
     # Pops the element from the stack 
-    def pop(self): 
-        if not self.isEmpty(): 
+    def __pop(self): 
+        if not self.__isEmpty(): 
             return self.st.pop() 
       
     # Pushes the element to the stack 
-    def push(self, op): 
+    def __push(self, op): 
         self.st.append(op)  
   
     # Returns True if character is an operand, False otherwise  
-    def isOperand(self, ch): 
-        return (ch.isalpha() and ch.isupper()) or ch == '⊥' or ch == '⊤'
+    def __isOperand(self, ch): 
+        return (ch.isalpha() and ch.isupper()) or ch == BOT or ch == TOP
     
-    def isOperator(self, ch):
-        return ch in ['¬', '∨', '∧', '→', '↔']
+    def __isOperator(self, ch):
+        return ch in CONNECTIVES or ch == NEG
   
     # Returns True if the precedence of operator is less than top of the stack, False otherwise
-    def not_greater(self, i): 
+    def __not_greater(self, i): 
         try: 
             prec1 = self.precedence[i] 
-            prec2 = self.precedence[self.top()] 
+            prec2 = self.precedence[self.__top()] 
             return prec1  < prec2
         except KeyError:  
             return False
@@ -57,7 +65,7 @@ class Conversion:
 
         for count, c in enumerate(exp): 
             # Operand, add it to output 
-            if self.isOperand(c):
+            if self.__isOperand(c):
                 last_connective = -1
                 self.output.append(c)
                 
@@ -69,7 +77,7 @@ class Conversion:
               
             #'(', push it to stack
             elif c  == '(': 
-                self.push(c)
+                self.__push(c)
                 negation = False
 
                 open_parentheses += 1
@@ -82,7 +90,7 @@ class Conversion:
                     print("String is not a WFF: ')' closed but not opened at index " + str(count))
                     return False
                 
-                if not self.isEmpty() and self.top() == '(':
+                if not self.__isEmpty() and self.__top() == '(':
                     print("String is not a WFF: redundant parentheses closing at index " + str(count))
                     return False
                 
@@ -90,24 +98,24 @@ class Conversion:
                     print("String is not a WFF: expected WFF/Atom at index " + str(count))
                     return False
 
-                while not self.isEmpty() and self.top() != '(': 
-                    a = self.pop() 
+                while not self.__isEmpty() and self.__top() != '(': 
+                    a = self.__pop() 
                     self.output.append(a) 
 
-                if not self.isEmpty() and self.top() != '(': 
+                if not self.__isEmpty() and self.__top() != '(': 
                     print("Error")
                     return False
                 else: 
-                    self.pop() 
+                    self.__pop() 
   
             # Operator
-            elif self.isOperator(c):
+            elif self.__isOperator(c):
                 last_connective = count
                 if count == len(exp) - 1:
                     print("String is not a WFF: expected WFF/Atom at index " + str(count))
                     return False
                 
-                if c != '¬':
+                if c != NEG:
 
                     oprn_oprt -= 1
                     if oprn_oprt < 0 or negation == True:
@@ -116,16 +124,16 @@ class Conversion:
                 else:
                     negation = True
 
-                while not self.isEmpty() and self.not_greater(c): 
-                    self.output.append(self.pop()) 
-                self.push(c)
+                while not self.__isEmpty() and self.__not_greater(c): 
+                    self.output.append(self.__pop()) 
+                self.__push(c)
             else:
                 print("String is not a WFF: illegal character at index " + str(count))
                 return False
   
         # pop all the operators left from the stack 
-        while not self.isEmpty(): 
-            self.output.append(self.pop()) 
+        while not self.__isEmpty(): 
+            self.output.append(self.__pop()) 
         
         if open_parentheses != 0:
             print("String is not a WFF: parentheses not closed properly!")
