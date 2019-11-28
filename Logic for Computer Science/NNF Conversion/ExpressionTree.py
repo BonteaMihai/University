@@ -1,5 +1,15 @@
-# An expression tree node
 from COLORS import style 
+
+CONJ = '∧'
+DISJ = '∨'
+IMPL = '→'
+EQUIV = '↔'
+NEG = '¬'
+TOP = '⊤'
+BOT = '⊥'
+CONNECTIVES = [EQUIV, IMPL, DISJ, CONJ]
+
+# An expression tree node
 class ExpressionTreeNode: 
 
     # Constructor to create a node 
@@ -91,10 +101,7 @@ class ExpressionTree:
 
     def __init__(self, postfix):
         
-        self.postfix = postfix
-        #print(self.postfix)
-        self.__connectives = ['↔', '→', '∨', '∧']
-        self.__negation = '¬'
+        self.postfix = postfix 
 
         self.root = self.__constructTree()
     
@@ -106,7 +113,7 @@ class ExpressionTree:
         for char in self.postfix : 
   
             # Operand, simply push into stack 
-            if char not in self.__connectives and char != self.__negation: 
+            if char not in CONNECTIVES and char != NEG: 
                 t = ExpressionTreeNode(char) 
                 stack.append(t) 
   
@@ -114,7 +121,7 @@ class ExpressionTree:
             else: 
                 
                 # Char is a connective different from negation(unary operator)
-                if char in self.__connectives:
+                if char in CONNECTIVES:
                     # Pop two top nodes 
                     t = ExpressionTreeNode(char) 
                     t1 = stack.pop() 
@@ -192,16 +199,16 @@ class ExpressionTree:
 
     def __reduce_eq(self, node):
         
-        if node.value == '↔':
+        if node.value == EQUIV:
             # Setting the modified flag to True
             self.__modified_flag = True
 
             #Changing the node value to '∧'
-            node.value = '∧'
+            node.value = CONJ
 
             # These will be the new children of the current node
-            new_left = ExpressionTreeNode('→')
-            new_right = ExpressionTreeNode('→')
+            new_left = ExpressionTreeNode(IMPL)
+            new_right = ExpressionTreeNode(IMPL)
 
             # Setting the children of the new left child of node
             new_left.left = node.left
@@ -228,15 +235,15 @@ class ExpressionTree:
         self.__reduce_impl(self.root)
     
     def __reduce_impl(self, node):
-        if node.value == '→':
+        if node.value == IMPL:
             # Setting the modified flag to True
             self.__modified_flag = True
 
             # Changing the node value to '∨'
-            node.value = '∨'
+            node.value = DISJ
 
             # Creating a new left child for the current node, containing '¬'
-            new_left = ExpressionTreeNode('¬')
+            new_left = ExpressionTreeNode(NEG)
             new_left.left = node.left
 
             # Updating the children of node
@@ -267,25 +274,25 @@ class ExpressionTree:
         str_right = ""
 
         # Binary connectives
-        if node.value in self.__connectives:
+        if node.value in CONNECTIVES:
             node.left, str_left = self.__apply_idempocy(node.left)
             node.right, str_right = self.__apply_idempocy(node.right)
         # Unary connective
-        elif node.value == self.__negation:
+        elif node.value == NEG:
             node.left, str_left = self.__apply_idempocy(node.left)
         # Atom
         else:
             return (node, node.value)
 
         # Or / And connective
-        if (node.value == '∨' or node.value == '∧') and str_left == str_right:
+        if (node.value == DISJ or node.value == CONJ) and str_left == str_right:
             # Return the node containing the child(Apply idempocy)
             # Set the modified flag to True
             self.__modified_flag = True
             return (node.left, str_left)
-        elif node.value in self.__connectives:
+        elif node.value in CONNECTIVES:
             return (node, '(' + str_left + node.value + str_right + ')')
-        elif node.value == self.__negation:
+        elif node.value == NEG:
             return (node, '(' + node.value + str_left + ')')
         else:
             return (node, node.value)
@@ -309,22 +316,22 @@ class ExpressionTree:
         str_right = ""
 
         # Binary connectives
-        if node.value in self.__connectives:
+        if node.value in CONNECTIVES:
             str_left = self.__apply_annihilation(node.left)
             str_right = self.__apply_annihilation(node.right)
         # Unary connective
-        elif node.value == self.__negation:
+        elif node.value == NEG:
             str_left = self.__apply_annihilation(node.left)
         # Atom
         else:
             return node.value
         
         # Implication + Annihilation
-        if node.value == '→' and str_left == str_right:
+        if node.value == IMPL and str_left == str_right:
             # Setting the modified flag to True
             self.__modified_flag = True
             # Changing the value of the node to 'T'
-            node.value = '⊤'
+            node.value = TOP
             
             # Deleting the children nodes
             node.left = None
@@ -333,11 +340,11 @@ class ExpressionTree:
             return node.value
         
         # Disjunction + Annihilation
-        elif node.value == '∨' and ('(¬' + str_left + ')' == str_right or str_left == '(¬' + str_right + ')'):
+        elif node.value == DISJ and ('(¬' + str_left + ')' == str_right or str_left == '(¬' + str_right + ')'):
             # Setting the modified flag to True
             self.__modified_flag = True
             # Changing the value of the node to 'T'
-            node.value = '⊤'
+            node.value = TOP
 
             # Deleting the children nodes
             node.left = None
@@ -346,11 +353,11 @@ class ExpressionTree:
             return node.value
         
         # Conjunction + Annihilation
-        elif node.value == '∧' and ('(¬' + str_left + ')' == str_right or str_left == '(¬' + str_right + ')'):
+        elif node.value == CONJ and ('(¬' + str_left + ')' == str_right or str_left == '(¬' + str_right + ')'):
             # Setting the modified flag to True
             self.__modified_flag = True
             # Changing the value of the node to '⊥'
-            node.value = '⊥'
+            node.value = BOT
 
             # Deleting the children nodes
             node.left = None
@@ -359,10 +366,10 @@ class ExpressionTree:
             return node.value
         
         # Binary connective
-        elif node.value in self.__connectives:
+        elif node.value in CONNECTIVES:
             return '(' + str_left + node.value + str_right + ')'
         # Unary connective(negation)
-        elif node.value == self.__negation:
+        elif node.value == NEG:
             return '(' + node.value + str_left + ')'
         # Atom
         else:
@@ -385,73 +392,73 @@ class ExpressionTree:
     def __apply_true_false(self, node):
         
         # Binary connective
-        if node.value in self.__connectives:
+        if node.value in CONNECTIVES:
             node.left = self.__apply_true_false(node.left)
             node.right = self.__apply_true_false(node.right)
         
         # Unary connective
-        elif node.value == self.__negation:
+        elif node.value == NEG:
             node.left = self.__apply_true_false(node.left)
         # Atom
         else:
             return node
 
         # Negation
-        if node.value == self.__negation:
-            if node.left.value == '⊤':
+        if node.value == NEG:
+            if node.left.value == BOT:
                 # Setting the modified flag to True
                 self.__modified_flag = True
-                node.value = '⊥'
+                node.value = BOT
                 node.left = None
                 return node
-            elif node.left.value == '⊥':
+            elif node.left.value == BOT:
                 # Setting the modified flag to True
                 self.__modified_flag = True
-                node.value = '⊤'
+                node.value = TOP
                 node.left = None
                 return node
         # Disjunction
-        elif node.value == '∨':
-            if node.left.value == '⊥':
+        elif node.value == DISJ:
+            if node.left.value == BOT:
                 # Setting the modified flag to True
                 self.__modified_flag = True
                 return node.right
-            elif node.right.value == '⊥':
+            elif node.right.value == BOT:
                 # Setting the modified flag to True
                 self.__modified_flag = True 
                 return node.left
-            elif node.left.value == '⊤':
+            elif node.left.value == TOP:
                 # Setting the modified flag to True
                 self.__modified_flag = True
                 return node.left
-            elif node.right.value == '⊤':
+            elif node.right.value == TOP:
                 # Setting the modified flag to True
                 self.__modified_flag = True
                 return node.right
         # Conjunction
-        elif node.value == '∧':
-            if node.left.value == '⊤':
+        elif node.value == CONJ:
+            if node.left.value == TOP:
                 # Setting the modified flag to True
                 self.__modified_flag = True
                 return node.right
-            elif node.right.value == '⊤':
+            elif node.right.value == TOP:
                 # Setting the modified flag to True
                 self.__modified_flag = True
                 return node.left
-            elif node.left.value == '⊥':
+            elif node.left.value == BOT:
                 # Setting the modified flag to True
                 self.__modified_flag = True
                 return node.left
-            elif node.right.value == '⊥':
+            elif node.right.value == BOT:
                 # Setting the modified flag to True
                 self.__modified_flag = True
                 return node.right
         # Implication
-        elif node.value == '→' and (node.left.value == '⊥' or node.right.value == '⊤'):
-            if node.left.value == '⊥':
+        elif node.value == IMPL and (node.left.value == BOT or node.right.value == TOP):
+            if node.left.value == BOT:
                 # Setting the modified flag to True
                 self.__modified_flag = True
-                node.value = '⊤'
+                node.value = TOP
                 node.left = None
                 return node
         
@@ -491,31 +498,31 @@ class ExpressionTree:
 
     def __apply_de_morgan(self, node):
         # Binary operator
-        if node.value in self.__connectives:
+        if node.value in CONNECTIVES:
             node.left = self.__apply_de_morgan(node.left)
             node.right = self.__apply_de_morgan(node.right)
         # Unary operator
-        elif node.value == self.__negation:
+        elif node.value == NEG:
             node.left = self.__apply_de_morgan(node.left)
         # Atom
         else:
             return node
         
-        if node.value == self.__negation:
+        if node.value == NEG:
     
-            if node.left.value == '∨' or node.left.value == '∧':
+            if node.left.value == DISJ or node.left.value == CONJ:
                 # Set the modified flag to True
                 self.__modified_flag = True
 
                 # Flip the connective
-                if node.left.value == '∨':
-                    node.left.value = '∧'
+                if node.left.value == DISJ:
+                    node.left.value = CONJ
                 else:
-                    node.left.value = '∨'
+                    node.left.value = DISJ
 
                 # Creating nodes containing negation
-                new_left = ExpressionTreeNode('¬')
-                new_right = ExpressionTreeNode('¬')
+                new_left = ExpressionTreeNode(NEG)
+                new_right = ExpressionTreeNode(NEG)
 
                 # Setting children of negations
                 new_left.left = node.left.left
@@ -531,28 +538,28 @@ class ExpressionTree:
 
     def __apply_other_negation(self, node):
         # Binary operator
-        if node.value in self.__connectives:
+        if node.value in CONNECTIVES:
             node.left = self.__apply_other_negation(node.left)
             node.right = self.__apply_other_negation(node.right)
         # Unary operator
-        elif node.value == self.__negation:
+        elif node.value == NEG:
             node.left = self.__apply_other_negation(node.left)
         # Atom
         else:
             return node
         
-        if node.value == self.__negation:
+        if node.value == NEG:
         
-            if node.left.value == '→' or node.left.value == '↔':
+            if node.left.value == IMPL or node.left.value == EQUIV:
                 # Set the modified flag to True
                 self.__modified_flag = True
 
                 # Flip the connective in the case of implication
-                if node.left.value == '→':
-                    node.left.value = '∧'
+                if node.left.value == IMPL:
+                    node.left.value = CONJ
 
                 # Creating a new node containig negation
-                new_right = ExpressionTreeNode('¬')
+                new_right = ExpressionTreeNode(NEG)
 
                 # Setting child of negation
                 new_right.left = node.left.right
@@ -567,13 +574,13 @@ class ExpressionTree:
     def __apply_double_negation(self, node):
         
         # Negation
-        if node.value == self.__negation:
+        if node.value == NEG:
 
             count = 1
             current_node = node
 
             # Reaching the last negation in the tree, and counting their amount
-            while current_node.left.value == self.__negation:
+            while current_node.left.value == NEG:
                 count += 1
                 current_node = current_node.left
             
@@ -592,7 +599,7 @@ class ExpressionTree:
                 return current_node
 
         # Other binary connectives
-        elif node.value in self.__connectives:
+        elif node.value in CONNECTIVES:
             node.left = self.__apply_double_negation(node.left)
             node.right = self.__apply_double_negation(node.right)
         # Atoms
@@ -601,14 +608,10 @@ class ExpressionTree:
     """ ########################################################################### """
 
     def convert_to_DNF(self):
-        primary = '∧'
-        secondary = '∨'
-        self.root = self.__apply_tautologies(self.root, primary, secondary)
+        self.root = self.__apply_tautologies(self.root, CONJ, DISJ)
 
     def convert_to_CNF(self):
-        primary = '∨'
-        secondary = '∧'
-        self.root = self.__apply_tautologies(self.root, primary, secondary)
+        self.root = self.__apply_tautologies(self.root, DISJ, CONJ)
 
     def __apply_tautologies(self, node, primary, secondary):
         
@@ -655,6 +658,7 @@ class ExpressionTree:
 
         return node
 
+    """ ########################################################################### """
 
     def inorder_traversal(self):
         if self.root != None:

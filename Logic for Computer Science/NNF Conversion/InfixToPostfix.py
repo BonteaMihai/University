@@ -141,10 +141,3 @@ class Conversion:
         
         return ("".join(self.output)) 
 
-"""
-exp = "P→Q∧⊤"
-#exp = "PQ"
-obj = Conversion() 
-
-print(obj.infix_to_postfix_check(exp)) 
-"""

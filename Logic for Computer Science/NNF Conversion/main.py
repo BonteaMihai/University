@@ -104,26 +104,3 @@ class WFPropositionalFormula:
     def convert_to_CNF(self):
         if self.__expression_tree != None:
             self.__expression_tree.convert_to_CNF()
-
-"""
-form1 = WFPropositionalFormula("(A∨B)")
-form1.is_WFF()
-
-form2 = WFPropositionalFormula("((A∨B)↔(A∨B))")
-form2.is_WFF()
-
-form3 = WFPropositionalFormula("(A∨B)↔(A∨B)")
-form3.is_WFF()
-
-form4 = WFPropositionalFormula("((AB)↔(A∨B))")
-form4.is_WFF()
-
-form5 = WFPropositionalFormula("(((PQ)∨S)↔T)")
-form5.is_WFF()
-
-form6 = WFPropositionalFormula("(((↔Q)∨S)↔T)")
-form6.is_WFF()
-
-form7 = WFPropositionalFormula("P→Q∧R")
-form7.is_WFF()
-"""
