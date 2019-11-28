@@ -19,7 +19,7 @@ class ExpressionTreeNode:
         self.right = None
 
         # Dictionary which associates to each symbol a function
-        self.__funct = {'¬' : self.negation, '↔': self.equivalence, '→' : self.implication, '∨' : self.disjunction, '∧': self.conjunction}
+        self.__funct = {NEG : self.negation, EQUIV: self.equivalence, IMPL : self.implication, DISJ : self.disjunction, CONJ: self.conjunction}
    
     def inorder(self):
         if self.left != None:
@@ -32,10 +32,10 @@ class ExpressionTreeNode:
     
     def inorder_parentheses(self):
         
-        if self.value in ['↔', '→', '∨', '∧']:
+        if self.value in CONNECTIVES:
             string = '(' + self.left.inorder_parentheses() + self.value + self.right.inorder_parentheses() + ')'
             return string
-        elif self.value == '¬':
+        elif self.value == NEG:
             string = '(¬' + self.left.inorder_parentheses() + ')'
             return string
         else:
@@ -51,7 +51,7 @@ class ExpressionTreeNode:
 
         else:
             # Operator: negation
-            if self.value == '¬':
+            if self.value == NEG:
                 truth_val, string = self.left.evaluate(value_dict, show_steps)
 
                 negated_truth_val = self.__funct[self.value](truth_val) 
