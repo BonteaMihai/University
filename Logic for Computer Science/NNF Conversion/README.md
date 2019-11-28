@@ -49,7 +49,7 @@ After the abstract syntax tree was built, transforming it into Negation Normal F
 changing the value stored in certain nodes, through a series of function calls.
 
 
-![Untitled](https://user-images.githubusercontent.com/51800513/69729243-a6090c00-112e-11ea-9a84-ab039a1b63bd.png)
+![2nnf](https://user-images.githubusercontent.com/51800513/69831535-7a6f4a00-1232-11ea-95b6-49be72af4a9a.png)
 
 
 ## Updates:
@@ -58,6 +58,8 @@ changing the value stored in certain nodes, through a series of function calls.
 
 * added colors to UI
 
-![Untitled](https://user-images.githubusercontent.com/51800513/69422780-42956d80-0d2d-11ea-8b5d-e94be2dea6d1.png)
-
 * added converting to DNF and CNF functionality
+
+* improved the UI: chose more appropriate placeholders for the logical connectives
+
+![1nnf](https://user-images.githubusercontent.com/51800513/69831175-e3ee5900-1230-11ea-9d9c-f9122221b42d.png)

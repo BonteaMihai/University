@@ -405,7 +405,7 @@ class ExpressionTree:
 
         # Negation
         if node.value == NEG:
-            if node.left.value == BOT:
+            if node.left.value == TOP:
                 # Setting the modified flag to True
                 self.__modified_flag = True
                 node.value = BOT

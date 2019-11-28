@@ -18,13 +18,13 @@ class UserInterface():
         Removes whitespaces and newline characters that are left from reading from file
         Returns the list with the modifications
         """
-        user_input = user_input.replace('1', '¬')
-        user_input = user_input.replace('2', '∨')
-        user_input = user_input.replace('3', '∧')
-        user_input = user_input.replace('4', '→')
-        user_input = user_input.replace('5', '↔')
-        user_input = user_input.replace('6', '⊤')
-        user_input = user_input.replace('7', '⊥')
+        user_input = user_input.replace('!', '¬')
+        user_input = user_input.replace('|', '∨')
+        user_input = user_input.replace('&', '∧')
+        user_input = user_input.replace('>', '→')
+        user_input = user_input.replace('~', '↔')
+        user_input = user_input.replace('1', '⊤')
+        user_input = user_input.replace('0', '⊥')
 
         user_input = user_input.replace(' ', '')
         user_input = user_input.replace('\n', '')
@@ -114,7 +114,7 @@ class UserInterface():
         form.print_exp_tree()
     
     def __convert_to_NNF(self):
-        print(style.YELLOW("[ ¬ : 1 ][ ∨ : 2 ][ ∧ : 3 ][ → : 4 ][ ↔ : 5 ][ ⊤ : 6 ][ ⊥ : 7 ]") + style.RESET(""))
+        print(style.YELLOW("[ ¬ : ! ][ ∨ : | ][ ∧ : & ][ → : > ][ ↔ : ~ ][ ⊤ : 1 ][ ⊥ : 0 ]") + style.RESET(""))
         expr = input(style.BLUE("Insert your expression(with the help of the table above: ") + style.RESET(""))
         expr = self.__convert_str(expr)
         print(expr)
@@ -125,7 +125,7 @@ class UserInterface():
             form.print_exp_tree()
     
     def __convert_to_DNF(self):
-        print(style.YELLOW("[ ¬ : 1 ][ ∨ : 2 ][ ∧ : 3 ][ → : 4 ][ ↔ : 5 ][ ⊤ : 6 ][ ⊥ : 7 ]") + style.RESET(""))
+        print(style.YELLOW("[ ¬ : ! ][ ∨ : | ][ ∧ : & ][ → : > ][ ↔ : ~ ][ ⊤ : 1 ][ ⊥ : 0 ]") + style.RESET(""))
         expr = input(style.BLUE("Insert your expression(with the help of the table above: ") + style.RESET(""))
         expr = self.__convert_str(expr)
         print(expr)
@@ -137,7 +137,7 @@ class UserInterface():
             form.print_exp_tree()
 
     def __convert_to_CNF(self):
-        print(style.YELLOW("[ ¬ : 1 ][ ∨ : 2 ][ ∧ : 3 ][ → : 4 ][ ↔ : 5 ][ ⊤ : 6 ][ ⊥ : 7 ]") + style.RESET(""))
+        print(style.YELLOW("[ ¬ : ! ][ ∨ : | ][ ∧ : & ][ → : > ][ ↔ : ~ ][ ⊤ : 1 ][ ⊥ : 0 ]") + style.RESET(""))
         expr = input(style.BLUE("Insert your expression(with the help of the table above: ") + style.RESET(""))
         expr = self.__convert_str(expr)
         print(expr)
