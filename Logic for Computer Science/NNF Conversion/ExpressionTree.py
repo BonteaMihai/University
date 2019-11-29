@@ -608,10 +608,24 @@ class ExpressionTree:
     """ ########################################################################### """
 
     def convert_to_DNF(self):
+        # Initializing the modified flag with False
+        self.__modified_flag = False
         self.root = self.__apply_tautologies(self.root, CONJ, DISJ)
+        if self.__modified_flag == True:
+            print(style.GREEN("Applying A∧(B∨C) ~ (A∧B)∨(A∧C) to reach DNF") + style.RESET(""))
+            self.inorder_parentheses()
+        else:
+            print(style.RED("No more modifications required to reach DNF.") + style.RESET(""))
 
     def convert_to_CNF(self):
+        # Initializing the modified flag with False
+        self.__modified_flag = False
         self.root = self.__apply_tautologies(self.root, DISJ, CONJ)
+        if self.__modified_flag == True:
+            print(style.GREEN("Applying A∨(B∧C) ~ (A∨B)∧(A∨C) to reach CNF") + style.RESET(""))
+            self.inorder_parentheses()
+        else:
+            print(style.RED("No more modifications required to reach CNF.") + style.RESET(""))
 
     def __apply_tautologies(self, node, primary, secondary):
         
@@ -621,6 +635,7 @@ class ExpressionTree:
             node.right = self.__apply_tautologies(node.right, primary, secondary)
 
         if node.value == primary and (node.left != None and node.left.value == secondary):
+            self.__modified_flag = True
             # Changing the value of node.value 
             node.value = secondary
 
@@ -639,6 +654,7 @@ class ExpressionTree:
             node.right = new_right
 
         elif node.value == primary and (node.right != None and node.right.value == secondary):
+            self.__modified_flag = True
             # Changing the value of node.value 
             node.value = secondary
 

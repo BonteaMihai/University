@@ -134,7 +134,6 @@ class UserInterface():
             form.store_as_exp_tree()
             form.convert_to_NNF()
             form.convert_to_DNF()
-            form.print_exp_tree()
 
     def __convert_to_CNF(self):
         print(style.YELLOW("[ ¬ : ! ][ ∨ : | ][ ∧ : & ][ → : > ][ ↔ : ~ ][ ⊤ : 1 ][ ⊥ : 0 ]") + style.RESET(""))
@@ -146,7 +145,6 @@ class UserInterface():
             form.store_as_exp_tree()
             form.convert_to_NNF()
             form.convert_to_CNF()
-            form.print_exp_tree()
 
     def __print_menu(self):
         print(style.BLUE("\n\nChoose one of the following options: ") + style.RESET(""))
