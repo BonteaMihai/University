@@ -149,7 +149,7 @@ class UserInterface():
             form.convert_to_CNF()
 
     def __resolution(self):
-        expr = input(style.YELLOW("Enter the clauses") + style.RESET(""))
+        expr = input(style.YELLOW("Enter the clauses: ") + style.RESET(""))
         clauses = expr.split("0")
         
         cs = ClauseSet()
