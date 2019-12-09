@@ -152,8 +152,92 @@ class ClauseSet:
         # Pop it from the list
         self.__clauses.pop(index)
 
-    def apply_DPLL(self):
-        pass
+    def apply_DPLL(self, branch_id):
+        print(style.UNDERLINE("On branch : " + str(branch_id)) + style.RESET(""))
+        modified = True
+
+        while modified == True:
+            modified = False
+
+            """=================================================================="""
+            to_delete = None
+            # Finding a single literal for the 1-literal rule
+            for clause in self.__clauses:
+                if len(clause) == 1:
+                    to_delete = clause.literals[0]
+                    break
+            
+            # Applying the 1-literal rule if it is the case
+            if to_delete != None:
+                print(style.GREEN("Applying the 1-literal rule for the literal " + str(to_delete)) + style.RESET(""))
+                modified = True
+                # Removing clauses that contain the literal
+                for i in range(len(self.__clauses) - 1, -1, -1):
+                    # Found clause to delete
+                    if self.__clauses[i].contains_literal(to_delete):
+                        print(style.MAGENTA("Deleting the clause " + str(self.__clauses[i])) + style.RESET(""))
+                        self.__remove_clause(i)
+                
+                # Removing the complement of the literals from clauses
+                for i in range(len(self.__clauses) - 1, -1, -1):
+                    # Remove the complement of the literal from the clauses that contain it
+                    if self.__clauses[i].contains_literal(to_delete * -1):
+                        self.__literal_count[to_delete * -1] -= 1
+                        
+                        print(style.MAGENTA("Removed literal " + str(to_delete * -1) + " from clause " + str(self.__clauses[i])) + style.RESET(""), end = "")
+                        self.__clauses[i].remove_literal(to_delete * -1)
+                        print(style.GREEN(", result: " + str(self.__clauses[i])) + style.RESET(""))
+                        # We obtained the empty clause!
+                        if len(self.__clauses[i]) == 0:
+                            print(style.RED("We obtained {}, therefore Not Satisfiable") + style.RESET(""))
+                            return False
+            """=================================================================="""
+            for literal in self.__literal_count.keys():
+                if (literal * -1) not in self.__literal_count.keys() and self.__literal_count[literal] != 0:
+                    # Applying the pure literal rule
+                    modified = True
+                    print(style.GREEN("Applying the pure literal rule for literal " + str(literal)) + style.RESET(""))
+                    for i in range(len(self.__clauses) - 1, -1, -1):
+                        # Found clause to delete
+                        if self.__clauses[i].contains_literal(literal):
+                            print(style.MAGENTA("Deleting the clause " + str(self.__clauses[i])) + style.RESET(""))
+                            self.__remove_clause(i)
+            """=================================================================="""
+        
+        # K' = {}, return True
+        if len(self.__clauses) == 0:
+            print(style.GREEN("Reached empty clause set, therefore satisfiable for branch " + str(branch_id)) + style.RESET(""))
+            return True
+        # Otherwise, split
+        print(style.MAGENTA("Splitting branch " + str(branch_id) + " into branches " + str(branch_id * 2) + " and " + str(branch_id * 2 + 1)) + style.RESET(""))
+
+        max_count = 0
+        splitting_lit = None
+        # Choosing the literal to split on
+        for literal in self.__literal_count:
+            if literal >= 1:
+                if (self.__literal_count[literal] + self.__literal_count[-literal]) > max_count:
+                    max_count = (self.__literal_count[literal] + self.__literal_count[-literal])
+                    splitting_lit = literal
+
+        # Copying the set of clauses, and adding a clause to it containing just the literal
+        branch_left = copy.deepcopy(self)
+        branch_left.add_clause([splitting_lit])
+
+        left_truth_value = branch_left.apply_DPLL(branch_id * 2)
+        if left_truth_value == True:
+            print(style.GREEN("Left branch of branch " + str(branch_id) + " is satisfiable, we no longer check right branch") + style.RESET(""))
+            return True
+        
+        branch_right = copy.deepcopy(self)
+        branch_right.add_clause([splitting_lit * -1])
+
+        right_truth_value = branch_right.apply_DPLL(branch_id * 2 + 1)
+        if right_truth_value == True:
+            print(style.GREEN("Right branch of branch " + str(branch_id) + " is satisfiable, therefore current branch also satisfiable") + style.RESET(""))
+            return True
+        else:
+            print(style.RED("Branch " + str(branch_id) + " unsatisfiable on both branches") + style.RESET(""))
 
 
 class Clause:

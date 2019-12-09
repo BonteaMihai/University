@@ -38,3 +38,4 @@ answer: "Satisfiable"
 
 ![DP1](https://user-images.githubusercontent.com/51800513/70443462-de9ad500-1aa0-11ea-8f75-c4b9beb02857.png)
 
+-added extra functionality: Davis-Putnam Logemann Loveland method(DPLL)
