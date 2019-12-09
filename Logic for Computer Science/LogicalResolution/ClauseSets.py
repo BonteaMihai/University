@@ -97,7 +97,7 @@ class ClauseSet:
                         self.__clauses[i].remove_literal(to_delete * -1)
                         print(style.GREEN(", result: " + str(self.__clauses[i])) + style.RESET(""))
                         # We obtained the empty clause!
-                        if len(clause) == 0:
+                        if len(self.__clauses[i]) == 0:
                             print(style.RED("We obtained {}, therefore Not Satisfiable") + style.RESET(""))
                             return False
             """=================================================================="""
