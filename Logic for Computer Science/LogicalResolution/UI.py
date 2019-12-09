@@ -12,7 +12,7 @@ class UserInterface():
 
     def __init__(self):
         self.__filename = "example.txt"
-        self.__options = {"1" : self.__resolution}
+        self.__options = {"1" : self.__resolution, "2" : self.__apply_DP}
 
     def __convert_str(self, user_input):
         """
@@ -166,10 +166,31 @@ class UserInterface():
             cs.add_clause(literal_list)
 
         cs.apply_resolution()
+    
+    def __apply_DP(self):
+        expr = input(style.YELLOW("Enter the clauses: ") + style.RESET(""))
+        clauses = expr.split("0")
+        
+        cs = ClauseSet()
+
+        for clause in clauses:
+            clause = clause.strip()
+
+            print(clause)
+            
+            literal_list = []
+            for num in clause.split(" "):
+                literal_list.append(int(num))
+            
+            cs.add_clause(literal_list)
+
+        cs.apply_DP()
+
 
     def __print_menu(self):
         print(style.BLUE("\n\nChoose one of the following options: ") + style.RESET(""))
-        print(style.CYAN("1)Apply the resolution method on the clauses") + style.RESET(""))
+        print(style.CYAN("1) Apply the resolution method on the clauses") + style.RESET(""))
+        print(style.CYAN("2) Apply Davis-Putnam method on the clauses") + style.RESET(""))
         print(style.RED("Or insert 'exit' to quit") + style.RESET(""))
 
 

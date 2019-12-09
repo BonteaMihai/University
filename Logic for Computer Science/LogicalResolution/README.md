@@ -31,3 +31,10 @@ do
 answer: "Satisfiable"
 
 ![Res1](https://user-images.githubusercontent.com/51800513/70396237-c3cc5000-1a0f-11ea-9c04-9b0fba17914a.png)
+
+## Updates
+
+-added extra functionality: Davis-Putnam method(DP)
+
+![DP1](https://user-images.githubusercontent.com/51800513/70443462-de9ad500-1aa0-11ea-8f75-c4b9beb02857.png)
+
