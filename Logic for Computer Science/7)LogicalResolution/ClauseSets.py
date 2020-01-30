@@ -153,6 +153,9 @@ class ClauseSet:
         self.__clauses.pop(index)
 
     def apply_DPLL(self, branch_id):
+
+        interpretation = []    # 1
+
         print(style.UNDERLINE("On branch : " + str(branch_id)) + style.RESET(""))
         modified = True
 
@@ -169,6 +172,9 @@ class ClauseSet:
             
             # Applying the 1-literal rule if it is the case
             if to_delete != None:
+
+                interpretation.append(to_delete)        # 2
+
                 print(style.GREEN("Applying the 1-literal rule for the literal " + str(to_delete)) + style.RESET(""))
                 modified = True
                 # Removing clauses that contain the literal
@@ -190,11 +196,14 @@ class ClauseSet:
                         # We obtained the empty clause!
                         if len(self.__clauses[i]) == 0:
                             print(style.RED("We obtained {}, therefore Not Satisfiable") + style.RESET(""))
-                            return False
+                            return (False, [])
             """=================================================================="""
             for literal in self.__literal_count.keys():
                 if (literal * -1) not in self.__literal_count.keys() and self.__literal_count[literal] != 0:
                     # Applying the pure literal rule
+
+                    interpretation.append(literal)
+
                     modified = True
                     print(style.GREEN("Applying the pure literal rule for literal " + str(literal)) + style.RESET(""))
                     for i in range(len(self.__clauses) - 1, -1, -1):
@@ -207,7 +216,7 @@ class ClauseSet:
         # K' = {}, return True
         if len(self.__clauses) == 0:
             print(style.GREEN("Reached empty clause set, therefore satisfiable for branch " + str(branch_id)) + style.RESET(""))
-            return True
+            return (True, interpretation)
         # Otherwise, split
         print(style.MAGENTA("Splitting branch " + str(branch_id) + " into branches " + str(branch_id * 2) + " and " + str(branch_id * 2 + 1)) + style.RESET(""))
 
@@ -224,18 +233,18 @@ class ClauseSet:
         branch_left = copy.deepcopy(self)
         branch_left.add_clause([splitting_lit])
 
-        left_truth_value = branch_left.apply_DPLL(branch_id * 2)
+        left_truth_value, intr_left = branch_left.apply_DPLL(branch_id * 2)
         if left_truth_value == True:
             print(style.GREEN("Left branch of branch " + str(branch_id) + " is satisfiable, we no longer check right branch") + style.RESET(""))
-            return True
+            return (True, interpretation + intr_left)
         
         branch_right = copy.deepcopy(self)
         branch_right.add_clause([splitting_lit * -1])
 
-        right_truth_value = branch_right.apply_DPLL(branch_id * 2 + 1)
+        right_truth_value, intr_right = branch_right.apply_DPLL(branch_id * 2 + 1)
         if right_truth_value == True:
             print(style.GREEN("Right branch of branch " + str(branch_id) + " is satisfiable, therefore current branch also satisfiable") + style.RESET(""))
-            return True
+            return (True, interpretation + intr_right)
         else:
             print(style.RED("Branch " + str(branch_id) + " unsatisfiable on both branches") + style.RESET(""))
 

@@ -203,7 +203,11 @@ class UserInterface():
             
             cs.add_clause(literal_list)
 
-        cs.apply_DPLL(1)
+        truth_val, intr = cs.apply_DPLL(1)
+
+        if truth_val == True:
+            print("A model for the formula given is: ", end = " ")
+            print(intr)
 
 
     def __print_menu(self):
@@ -231,5 +235,3 @@ class UserInterface():
 
 ui = UserInterface()
 ui.start()
-
-
