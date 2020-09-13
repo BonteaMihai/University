@@ -4,7 +4,6 @@ from Operator import Operator
 class Controller:
 
     def __init__(self):
-        # Hardcoding the common operators
         add = Operator('+', 2, 1, lambda a, b : a + b)
         sub = Operator('-', 2, 1, lambda a, b : a - b)
         mul = Operator('*', 2, 2, lambda a, b : a * b)
