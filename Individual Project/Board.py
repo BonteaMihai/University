@@ -4,8 +4,11 @@ from texttable import Texttable
 
 class Board:
 
-    def __init__(self):
-        self.__data = [ [0] * 8, [0] * 8, [0] * 8, [0] * 8, [0] * 8, [0] * 8, [0] * 8, [0] * 8 ]
+    def __init__(self, d = None):
+        if d == None:
+            self.__data = [ [0] * 8, [0] * 8, [0] * 8, [0] * 8, [0] * 8, [0] * 8, [0] * 8, [0] * 8 ]
+        else:
+            self.__data = d
 
     @property
     def data(self):

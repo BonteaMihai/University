@@ -1,6 +1,7 @@
 from Plane import Plane
 from PlaneValidator import PlaneValidator
 from Game import Game
+import os
 
 class UI:
 
@@ -37,15 +38,25 @@ class UI:
         
         self.__game.set_difficulty(user_input)
 
-    def choose_new_old(self):
+    def choose_state(self):
         print("Do you want to start from where you left off? Y/N")
         is_input_correct = False
         while is_input_correct == False:
             user_input = input()
-            if user_input == "Y":
-                pass
-            elif user_input == "N":
-                pass
+            if user_input.capitalize() == "Y":
+                if os.stat("gamestate.json").st_size != 0:
+                    self.__game = Game.from_JSON("gamestate.json")
+                    self.play()
+                    is_input_correct = True
+                else:
+                    print("Backup file is empty!")
+            elif user_input.capitalize() == "N":
+                self.choose_difficulty()
+                self.place_planes()
+                self.play()
+                is_input_correct = True
+            else:
+                print(user_input + " is not a valid option!")
 
     def print_update(self):
         """
@@ -110,12 +121,16 @@ class UI:
                 user_input = input()
                 is_input_correct = True
 
+                # Checking if the number of arguments is right
                 try:
                     row, col = user_input.split(" ")
+                    row = row.strip()
+                    col = col.strip()
                 except:
                     is_input_correct = False
                     print("Too few arguments")
 
+                # Checking if row is an integer
                 if is_input_correct:
                     try:
                         int(row)
@@ -125,12 +140,16 @@ class UI:
                     else:
                         row = int(row)
 
+                # Checking if row is a number
                 if is_input_correct:
                     if row < 1 or row > 8:
                         is_input_correct = False
                         print("Row must be between 1 and 8")
-            
+
+                # Checking if column is between 'A' and 'H'
                 if is_input_correct:
+                    col = col.capitalize()
+                    print("Col is " + col)
                     if col < "A" or col > "H":
                         is_input_correct = False
                         print("Col must be between A and H")
@@ -148,6 +167,9 @@ class UI:
             self.__game.player_attack(row, col)
 
             self.__game.computer_move()
+
+            # Storing the state of the game at every iteration
+            self.__game.dump_JSON("gamestate.json")
 
             self.print_update()
 

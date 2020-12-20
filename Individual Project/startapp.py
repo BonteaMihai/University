@@ -9,6 +9,5 @@ game = Game(player_board, computer_board)
 game.computer_place_planes()
 
 ui = UI(game)
-ui.choose_difficulty()
-ui.place_planes()
-ui.play()
+
+ui.choose_state()

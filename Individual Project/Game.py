@@ -2,10 +2,11 @@ from random import choice
 from PlaneValidator import PlaneValidator
 from Plane import Plane
 from Board import Board
+import json
 
 class Game:
 
-    def __init__(self, player_board, computer_board):
+    def __init__(self, player_board = None, computer_board = None):
         self.__player_board = player_board
         self.__computer_board = computer_board
         self.__difficulty = None
@@ -20,6 +21,54 @@ class Game:
         self.__computer_pending_queue = []
         """Utility variables for AI V2"""
         self.__possibilities_list = []
+
+        #Variable used for storing records
+        self.__records = {'wins' : 0, 'losses' : 0, 'best_time' : None}
+    
+    @staticmethod
+    def from_JSON(filename):
+
+        with open(filename) as json_file:
+            data = json.load(json_file)
+
+            # Initializing an empty Game object
+            game = Game()
+            game.__player_board = Board(data['player_board'])
+            game.__computer_board = Board(data['computer_board'])
+            game.__difficulty = data['difficulty']
+            game.__lost = data['lost']
+            game.__won = data['won']
+            game.__player_kills = data['player_kills']
+            game.__computer_kills = data['computer_kills']
+            game.__player_hits = data['player_hits']
+            game.__computer_hits = data['computer_hits']
+            game.__computer_landed_queue = data['computer_landed_queue']
+            game.__computer_pending_queue = data['computer_pending_queue']
+            game.__possibilities_list = data['possibilities_list']
+            game.__records = data['records']
+
+            return game
+
+
+
+    def dump_JSON(self, filename):
+        data = {}
+        data['player_board'] = self.__player_board.data
+        data['computer_board'] = self.__computer_board.data
+        data['difficulty'] = self.__difficulty
+        data['lost'] = self.__lost
+        data['won'] = self.__won
+        data['player_kills'] = self.__player_kills
+        data['computer_kills'] = self.__computer_kills
+        data['player_hits'] = self.__player_hits
+        data['computer_hits'] = self.__computer_hits
+        data['computer_landed_queue'] = self.__computer_landed_queue
+        data['computer_pending_queue'] = self.__computer_pending_queue
+        data['possibilities_list'] = self.__possibilities_list
+        data['records'] = self.__records
+        
+        with open(filename, 'w') as outfile:
+            json.dump(data, outfile)
 
     def set_difficulty(self, ai):
         """
