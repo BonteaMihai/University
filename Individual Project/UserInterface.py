@@ -173,7 +173,7 @@ class UI:
                     xrow = row - 1
                     xcol = ord(col) - ord("A")
                     player_hits = self.__game.player_hits
-                    if (xrow, xcol) in player_hits:
+                    if (xrow, xcol) in player_hits or [xrow, xcol] in player_hits:
                         is_input_correct = False
                         print("You already attacked this area once")
                     else:
