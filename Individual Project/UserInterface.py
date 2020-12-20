@@ -81,12 +81,18 @@ class UI:
         while placed_planes < 2:
             user_input = input()
             is_input_correct = True
+
+            # Checking if the number of arguments is correct
             try:
                 direction, row, col = user_input.split(" ")
+                direction = direction.strip()
+                row = row.strip()
+                col = col.strip()
             except:
                 is_input_correct = False
                 print("Too few arguments")
             
+            # Checking if the row is an integer
             if is_input_correct:
                 try:
                     int(row)
@@ -96,6 +102,8 @@ class UI:
                 else:
                     row = int(row)
 
+            direction = direction.capitalize()
+            col = col.capitalize()
             if is_input_correct:
                 plane = Plane(direction, row, col)
                 board = self.__game.player_board
@@ -113,13 +121,21 @@ class UI:
                 
     def play(self):
         
+        # Save game state after all planes were placed
+        self.__game.dump_JSON("gamestate.json")
+
         while self.__game.won == False and self.__game.lost == False:
             print("Choose the coordinates that you wanna attack: 1-8, A-H: ")
             input_was_given = False
+            user_input = None
             
             while input_was_given == False:
                 user_input = input()
                 is_input_correct = True
+
+                if (user_input.strip().upper() == "EXIT"):
+                    input_was_given = True
+                    continue
 
                 # Checking if the number of arguments is right
                 try:
@@ -149,7 +165,6 @@ class UI:
                 # Checking if column is between 'A' and 'H'
                 if is_input_correct:
                     col = col.capitalize()
-                    print("Col is " + col)
                     if col < "A" or col > "H":
                         is_input_correct = False
                         print("Col must be between A and H")
@@ -163,7 +178,11 @@ class UI:
                         print("You already attacked this area once")
                     else:
                         input_was_given = True
-                    
+
+            if (user_input.strip().upper() == "EXIT"):
+                print("Saving and exiting...")
+                break
+
             self.__game.player_attack(row, col)
 
             self.__game.computer_move()
@@ -173,9 +192,10 @@ class UI:
 
             self.print_update()
 
+
             
 
         if self.__game.won == True:
             print("You won!☻")
-        else:
+        elif self.__game.lost == True:
             print("You lost...")
