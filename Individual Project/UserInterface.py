@@ -193,7 +193,6 @@ class UI:
             self.print_update()
 
 
-            
 
         if self.__game.won == True:
             print("You won!☻")
