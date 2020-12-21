@@ -46,11 +46,15 @@ class UI:
             if user_input.capitalize() == "Y":
                 if os.stat("gamestate.json").st_size != 0:
                     self.__game = Game.from_JSON("gamestate.json")
-                    self.play()
-                    is_input_correct = True
+                    if self.__game.won or self.__game.lost:
+                        print("Cannot continue from last game because the game was finished.")
+                    else:
+                        self.play()
+                        is_input_correct = True
                 else:
                     print("Backup file is empty!")
             elif user_input.capitalize() == "N":
+                self.__game = Game()
                 self.choose_difficulty()
                 self.place_planes()
                 self.play()
@@ -191,7 +195,6 @@ class UI:
             self.__game.dump_JSON("gamestate.json")
 
             self.print_update()
-
 
 
         if self.__game.won == True:

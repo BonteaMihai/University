@@ -22,8 +22,11 @@ class Game:
         """Utility variables for AI V2"""
         self.__possibilities_list = []
 
-        #Variable used for storing records
-        self.__records = {'wins' : 0, 'losses' : 0, 'best_time' : None}
+        if self.__player_board == None:
+            self.__player_board = Board()
+        if self.__computer_board == None:
+            self.__computer_board = Board()
+
     
     @staticmethod
     def from_JSON(filename):
@@ -45,7 +48,6 @@ class Game:
             game.__computer_landed_queue = data['computer_landed_queue']
             game.__computer_pending_queue = data['computer_pending_queue']
             game.__possibilities_list = data['possibilities_list']
-            game.__records = data['records']
 
             return game
 
@@ -65,7 +67,6 @@ class Game:
         data['computer_landed_queue'] = self.__computer_landed_queue
         data['computer_pending_queue'] = self.__computer_pending_queue
         data['possibilities_list'] = self.__possibilities_list
-        data['records'] = self.__records
         
         with open(filename, 'w') as outfile:
             json.dump(data, outfile)
