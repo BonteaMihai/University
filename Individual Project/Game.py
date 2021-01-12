@@ -400,4 +400,4 @@ class Game:
 
     def print_computer_table(self):
         print(self.__computer_board.str_computer())
-    
+        #print(self.__computer_board.str_player())    

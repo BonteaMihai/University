@@ -57,6 +57,7 @@ class UI:
                 self.__game = Game()
                 self.choose_difficulty()
                 self.place_planes()
+                self.__game.computer_place_planes()
                 self.play()
                 is_input_correct = True
             else:
